@@ -390,3 +390,60 @@ turbo build --filter=@pascal-app/core
 | `packages/viewer/src/components/viewer/` | 主 Viewer 组件 |
 | `apps/editor/components/tools/` | 编辑器工具 |
 | `apps/editor/store/` | 编辑器特有状态 |
+| `apps/editor/app/api/` | API 路由（认证、线索、项目、同步） |
+| `apps/editor/lib/auth.ts` | Better Auth 认证配置 |
+| `apps/editor/lib/supabase.ts` | Supabase 客户端工具 |
+| `apps/editor/lib/amap.ts` | 高德地图地址解析 |
+| `apps/editor/scripts/migrate.mjs` | 数据库迁移脚本 |
+
+---
+
+## 环境变量
+
+复制 `.env.example` 为 `.env` 并填写以下变量：
+
+| 变量 | 必填 | 说明 |
+|------|------|------|
+| `POSTGRES_URL` | ✅ | Supabase PostgreSQL 连接字符串 |
+| `SUPABASE_SERVICE_ROLE_KEY` | ✅ | Supabase Service Role Key |
+| `NEXT_PUBLIC_SUPABASE_URL` | ✅ | Supabase 项目 URL |
+| `BETTER_AUTH_SECRET` | ✅ | JWT 签名密钥 |
+| `JWT_SECRET` | ✅ | JWT 加密密钥 |
+| `AMAP_KEY` | 可选 | 高德地图 Web 服务 API Key |
+| `NEXT_PUBLIC_ASSETS_CDN_URL` | 可选 | 静态资源 CDN 地址 |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | 可选 | Supabase Anon Key |
+
+---
+
+## 部署
+
+### Vercel 部署
+
+1. 在 [Vercel](https://vercel.com) 导入本仓库
+2. 设置 Root Directory 为 `apps/editor`
+3. Framework Preset 选择 `Next.js`
+4. 在 Environment Variables 中配置上述环境变量
+5. 部署前运行数据库迁移：`node apps/editor/scripts/migrate.mjs`
+
+### Supabase 配置
+
+1. 创建 [Supabase](https://supabase.com) 项目
+2. 运行 `apps/editor/scripts/migrate.mjs` 创建数据库表
+3. 启用 Row Level Security (RLS) 策略（迁移脚本已包含）
+
+---
+
+## API 接口
+
+| 接口 | 方法 | 说明 |
+|------|------|------|
+| `/api/auth/sms/send` | POST | 发送短信验证码 |
+| `/api/auth/sms/verify` | POST | 验证码登录/注册 |
+| `/api/auth/me` | GET | 获取当前用户信息 |
+| `/api/projects` | GET/POST | 项目列表/创建项目 |
+| `/api/projects/[id]/sync` | GET/POST | 项目云同步 |
+| `/api/projects/share/[code]` | GET | 通过分享码获取项目 |
+| `/api/leads` | POST | 业主提交留资 |
+| `/api/leads/market` | GET | 抢单大厅线索列表 |
+| `/api/leads/[id]/buy` | POST | 包工头购买线索 |
+| `/api/leads/orders` | GET | 包工头订单列表 |
