@@ -1,10 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getSupabaseAdmin, getBudgetLevel } from '../../../lib/supabase'
+import { geocodeAddress } from '../../../lib/amap'
 
 /**
  * POST /api/leads
  * C端业主提交留资信息
- * 
+ *
  * 请求体：
  * {
  *   name: string        - 姓名（必填）
@@ -58,6 +59,15 @@ export async function POST(request: NextRequest) {
     // ── 计算预算等级 ────────────────────────────────────────────────────
     const budgetLevel = getBudgetLevel(budget || '20-30')
 
+    // ── 高德地图地址解析（获取行政区划代码）──────────────────────────────
+    let addressCode = ''
+    if (address) {
+      const geoResult = await geocodeAddress(address)
+      if (geoResult) {
+        addressCode = geoResult.adcode
+      }
+    }
+
     // ── 计算过期时间（30天后下架）────────────────────────────────────────
     const expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString()
 
@@ -70,7 +80,7 @@ export async function POST(request: NextRequest) {
         budget: budget || '20-30',
         budget_level: budgetLevel,
         address: address?.trim() || '',
-        address_code: '', // TODO: 接入高德地图API解析行政区划代码
+        address_code: addressCode,
         project_code: projectCode || null,
         source: source || 'unknown',
         status: 'open',

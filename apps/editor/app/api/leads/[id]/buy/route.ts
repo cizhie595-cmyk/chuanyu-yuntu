@@ -1,15 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getSupabaseAdmin } from '../../../../../lib/supabase'
+import { verifyToken } from '../../../../../lib/auth-utils'
 
 /**
  * POST /api/leads/:id/buy
  * B端包工头购买线索
- * 
+ *
  * 请求头：
- * - Authorization: Bearer <token>（TODO: 接入 Better Auth 验证）
- * 
+ * - Authorization: Bearer <token> 或 cookie auth_token
+ *
  * 响应：
- * - 成功：返回订单ID和支付链接
+ * - 成功：返回订单ID和支付信息
  * - 失败：返回错误信息
  */
 export async function POST(
@@ -19,21 +20,22 @@ export async function POST(
   try {
     const { id: leadId } = await params
 
-    // TODO: 从 Better Auth 获取当前登录用户
-    // const session = await auth.api.getSession({ headers: request.headers })
-    // if (!session) {
-    //   return NextResponse.json({ error: '请先登录' }, { status: 401 })
-    // }
-    // const contractorId = session.user.id
-
-    // 临时：从请求体获取包工头ID（正式版需要从session获取）
-    const body = await request.json().catch(() => ({}))
-    const contractorId = body.contractor_id
-
-    if (!contractorId) {
+    // ── 身份验证（从 JWT token 获取用户信息）─────────────────────────────
+    const payload = await verifyToken(request)
+    if (!payload) {
       return NextResponse.json(
         { error: '请先登录后再购买线索' },
         { status: 401 }
+      )
+    }
+
+    const contractorId = payload.sub
+
+    // 验证用户角色（只有包工头可以购买线索）
+    if (payload.role !== 'contractor' && payload.role !== 'admin') {
+      return NextResponse.json(
+        { error: '只有包工头账号才能购买线索，请切换账号或注册包工头账号' },
+        { status: 403 }
       )
     }
 
@@ -91,6 +93,20 @@ export async function POST(
       )
     }
 
+    // ── 检查信用分 ──────────────────────────────────────────────────────
+    const { data: contractor } = await supabase
+      .from('users')
+      .select('credit_score')
+      .eq('id', contractorId)
+      .single()
+
+    if (contractor && contractor.credit_score < 60) {
+      return NextResponse.json(
+        { error: '您的信用分不足，无法购买线索。请联系客服处理。' },
+        { status: 403 }
+      )
+    }
+
     // ── 计算价格 ────────────────────────────────────────────────────────
     const price = getLeadPrice(lead.budget_level, lead.source)
 
@@ -126,14 +142,13 @@ export async function POST(
       })
       .eq('id', leadId)
 
-    // TODO: 对接微信支付/支付宝，生成支付链接
-    // 目前返回模拟的支付链接
+    // V1.0：返回订单信息，支付页面在前端处理
+    // V2.0：对接微信支付/支付宝，返回真实支付链接
     return NextResponse.json({
       success: true,
       order_id: order.id,
       amount: price,
-      // TODO: 替换为真实支付链接
-      pay_url: `/pay/${order.id}`,
+      pay_url: `/market/pay/${order.id}`,
       message: `订单创建成功，需支付 ${price} 元`,
     })
   } catch (error) {
@@ -146,7 +161,10 @@ export async function POST(
 }
 
 /**
- * 线索定价逻辑（与 market route 保持一致）
+ * 线索定价逻辑
+ * - 基础线索（预算低/来源不明）：30元
+ * - 意向线索（预算中等/H5分享来源）：150元
+ * - 精准线索（预算高+有项目关联）：300元
  */
 function getLeadPrice(budgetLevel: number, source: string): number {
   if (budgetLevel >= 3 && source === 'h5_share') return 300

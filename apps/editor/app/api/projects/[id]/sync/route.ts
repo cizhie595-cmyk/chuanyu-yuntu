@@ -1,10 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getSupabaseAdmin } from '../../../../../lib/supabase'
+import { verifyToken } from '../../../../../lib/auth-utils'
 
 /**
  * POST /api/projects/:id/sync
- * 同步场景数据到云端
- * 
+ * 同步场景数据到云端（需要登录）
+ *
  * 请求体：
  * {
  *   scene_data: SceneGraph  - 完整的场景图数据
@@ -27,13 +28,62 @@ export async function POST(
       )
     }
 
-    // TODO: 从 Better Auth 验证用户身份
-    // const session = await auth.api.getSession({ headers: request.headers })
-    // if (!session) {
-    //   return NextResponse.json({ error: '请先登录' }, { status: 401 })
-    // }
+    // ── 身份验证 ────────────────────────────────────────────────────────
+    const payload = await verifyToken(request)
+    if (!payload) {
+      return NextResponse.json(
+        { error: '请先登录' },
+        { status: 401 }
+      )
+    }
 
+    const userId = payload.sub
     const supabase = getSupabaseAdmin()
+
+    // ── 验证项目归属权 ──────────────────────────────────────────────────
+    const { data: project } = await supabase
+      .from('projects')
+      .select('id, user_id')
+      .eq('id', projectId)
+      .single()
+
+    if (project && project.user_id !== userId) {
+      return NextResponse.json(
+        { error: '无权操作此项目' },
+        { status: 403 }
+      )
+    }
+
+    // ── 如果项目不存在，创建新项目 ──────────────────────────────────────
+    if (!project) {
+      const shareCode = generateShareCode()
+      const { error: createError } = await supabase
+        .from('projects')
+        .insert({
+          id: projectId,
+          user_id: userId,
+          title: '未命名方案',
+          scene_data,
+          thumbnail_url: thumbnail_url || null,
+          share_code: shareCode,
+          is_private: false,
+        })
+
+      if (createError) {
+        console.error('创建项目失败:', createError)
+        return NextResponse.json(
+          { error: '创建项目失败，请稍后重试' },
+          { status: 500 }
+        )
+      }
+
+      return NextResponse.json({
+        success: true,
+        created: true,
+        share_code: shareCode,
+        updated_at: new Date().toISOString(),
+      })
+    }
 
     // ── 更新项目场景数据 ────────────────────────────────────────────────
     const updateData: Record<string, unknown> = {
@@ -73,10 +123,10 @@ export async function POST(
 
 /**
  * GET /api/projects/:id/sync
- * 获取项目场景数据（用于H5预览页加载）
+ * 获取项目场景数据（公开项目无需登录，私有项目需验证权限）
  */
 export async function GET(
-  _request: NextRequest,
+  request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
@@ -86,7 +136,7 @@ export async function GET(
 
     const { data: project, error } = await supabase
       .from('projects')
-      .select('id, title, scene_data, thumbnail_url, share_code, is_private')
+      .select('id, user_id, title, scene_data, thumbnail_url, share_code, is_private')
       .eq('id', projectId)
       .single()
 
@@ -97,12 +147,15 @@ export async function GET(
       )
     }
 
+    // ── 私有项目权限验证 ────────────────────────────────────────────────
     if (project.is_private) {
-      // TODO: 验证访问权限
-      return NextResponse.json(
-        { error: '该项目为私有项目' },
-        { status: 403 }
-      )
+      const payload = await verifyToken(request)
+      if (!payload || payload.sub !== project.user_id) {
+        return NextResponse.json(
+          { error: '该项目为私有项目，无权访问' },
+          { status: 403 }
+        )
+      }
     }
 
     return NextResponse.json({
@@ -120,4 +173,16 @@ export async function GET(
       { status: 500 }
     )
   }
+}
+
+/**
+ * 生成8位随机分享码
+ */
+function generateShareCode(): string {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789'
+  let code = ''
+  for (let i = 0; i < 8; i++) {
+    code += chars.charAt(Math.floor(Math.random() * chars.length))
+  }
+  return code
 }
