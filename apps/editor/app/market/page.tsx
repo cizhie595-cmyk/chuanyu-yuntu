@@ -15,6 +15,7 @@ interface Lead {
   created_at: string
   expires_at: string
   price: number
+  original_price?: number
 }
 
 interface Pagination {
@@ -31,13 +32,29 @@ interface User {
   credit_score: number
 }
 
-// ── 预算筛选选项 ──────────────────────────────────────────────────────────
+// ── 预算筛选选项 ────────────────────────────────────────────────────
 const BUDGET_FILTERS = [
   { value: '', label: '全部预算' },
   { value: '1', label: '10-20万' },
   { value: '2', label: '20-30万' },
   { value: '3', label: '30-50万' },
   { value: '4', label: '50万以上' },
+]
+
+// ── 区域筛选选项（川渝地区）──────────────────────────────────────────
+const REGION_FILTERS = [
+  { value: '', label: '全部地区' },
+  { value: '51', label: '四川省' },
+  { value: '5101', label: '成都市' },
+  { value: '5107', label: '绵阳市' },
+  { value: '5108', label: '广元市' },
+  { value: '5110', label: '内江市' },
+  { value: '5113', label: '南充市' },
+  { value: '5115', label: '宜宾市' },
+  { value: '50', label: '重庆市' },
+  { value: '5001', label: '渝中区' },
+  { value: '5002', label: '万州区' },
+  { value: '5003', label: '涪陵区' },
 ]
 
 export default function MarketPage() {
@@ -47,6 +64,7 @@ export default function MarketPage() {
   const [pagination, setPagination] = useState<Pagination | null>(null)
   const [loading, setLoading] = useState(true)
   const [budgetFilter, setBudgetFilter] = useState('')
+  const [regionFilter, setRegionFilter] = useState('')
   const [page, setPage] = useState(1)
   const [buying, setBuying] = useState<string | null>(null)
 
@@ -68,6 +86,7 @@ export default function MarketPage() {
     try {
       const params = new URLSearchParams({ page: String(page), limit: '20' })
       if (budgetFilter) params.set('budget_level', budgetFilter)
+      if (regionFilter) params.set('region', regionFilter)
 
       const res = await fetch(`/api/leads/market?${params}`)
       const data = await res.json()
@@ -81,7 +100,7 @@ export default function MarketPage() {
     } finally {
       setLoading(false)
     }
-  }, [page, budgetFilter])
+  }, [page, budgetFilter, regionFilter])
 
   useEffect(() => {
     fetchLeads()
@@ -176,24 +195,47 @@ export default function MarketPage() {
 
       {/* 筛选栏 */}
       <div className="sticky top-[57px] z-40 border-b border-white/5 bg-slate-900/60 backdrop-blur-md">
-        <div className="mx-auto flex max-w-5xl gap-2 overflow-x-auto px-4 py-3">
-          {BUDGET_FILTERS.map((filter) => (
-            <button
-              className={`shrink-0 rounded-full px-4 py-1.5 text-sm transition-colors ${
-                budgetFilter === filter.value
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white'
-              }`}
-              key={filter.value}
-              onClick={() => {
-                setBudgetFilter(filter.value)
-                setPage(1)
-              }}
-              type="button"
-            >
-              {filter.label}
-            </button>
-          ))}
+        <div className="mx-auto max-w-5xl space-y-2 px-4 py-3">
+          {/* 预算筛选 */}
+          <div className="flex gap-2 overflow-x-auto">
+            {BUDGET_FILTERS.map((filter) => (
+              <button
+                className={`shrink-0 rounded-full px-4 py-1.5 text-sm transition-colors ${
+                  budgetFilter === filter.value
+                    ? 'bg-blue-600 text-white'
+                    : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white'
+                }`}
+                key={filter.value}
+                onClick={() => {
+                  setBudgetFilter(filter.value)
+                  setPage(1)
+                }}
+                type="button"
+              >
+                {filter.label}
+              </button>
+            ))}
+          </div>
+          {/* 区域筛选 */}
+          <div className="flex gap-2 overflow-x-auto">
+            {REGION_FILTERS.map((filter) => (
+              <button
+                className={`shrink-0 rounded-full px-3 py-1 text-xs transition-colors ${
+                  regionFilter === filter.value
+                    ? 'bg-emerald-600 text-white'
+                    : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white'
+                }`}
+                key={filter.value}
+                onClick={() => {
+                  setRegionFilter(filter.value)
+                  setPage(1)
+                }}
+                type="button"
+              >
+                {filter.label}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
@@ -247,9 +289,15 @@ export default function MarketPage() {
 
                     {/* 价格和购买按钮 */}
                     <div className="ml-4 flex flex-col items-end gap-2">
-                      <span className="text-xl font-bold text-white">
-                        ¥{lead.price}
-                      </span>
+                      <div className="text-right">
+                        {lead.original_price && lead.original_price > lead.price ? (
+                          <>
+                            <span className="text-xs text-gray-500 line-through">¥{lead.original_price}</span>
+                            <span className="ml-1 rounded bg-red-500/20 px-1 py-0.5 text-[10px] text-red-400">降价</span>
+                          </>
+                        ) : null}
+                        <span className="block text-xl font-bold text-white">¥{lead.price}</span>
+                      </div>
                       <button
                         className="rounded-lg bg-orange-600 px-4 py-2 text-sm font-medium text-white transition-all hover:bg-orange-700 disabled:opacity-50"
                         disabled={buying === lead.id || lead.remaining_slots <= 0}
