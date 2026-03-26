@@ -62,7 +62,9 @@ export async function GET(request: NextRequest) {
       created_at: lead.created_at,
       expires_at: lead.expires_at,
       // 线索定价：基础线索30元，意向线索150元，精准线索300元
-      price: getLeadPrice(lead.budget_level, lead.source),
+      // 7天后降价至70%，14天后降价至50%，30天下架
+      price: getLeadPrice(lead.budget_level, lead.source, lead.created_at),
+      original_price: getLeadBasePrice(lead.budget_level, lead.source),
     }))
 
     return NextResponse.json({
@@ -99,13 +101,32 @@ function desensitizeAddress(address: string): string {
 }
 
 /**
- * 线索定价逻辑
+ * 线索基础定价逻辑
  * - 基础线索（预算低/来源不明）：30元
  * - 意向线索（预算中等/H5分享来源）：150元
  * - 精准线索（预算高/有项目关联）：300元
  */
-function getLeadPrice(budgetLevel: number, source: string): number {
+function getLeadBasePrice(budgetLevel: number, source: string): number {
   if (budgetLevel >= 3 && source === 'h5_share') return 300
   if (budgetLevel >= 2 || source === 'h5_share') return 150
   return 30
+}
+
+/**
+ * 线索实际价格（含降价逻辑）
+ * PRD 规则：
+ * - 0~7天：原价
+ * - 7~14天：降价至 70%
+ * - 14~30天：降价至 50%
+ * - 30天后：自动下架（已通过 expires_at 过滤）
+ */
+function getLeadPrice(budgetLevel: number, source: string, createdAt: string): number {
+  const basePrice = getLeadBasePrice(budgetLevel, source)
+  const daysSinceCreated = Math.floor(
+    (Date.now() - new Date(createdAt).getTime()) / (1000 * 60 * 60 * 24)
+  )
+
+  if (daysSinceCreated >= 14) return Math.round(basePrice * 0.5)
+  if (daysSinceCreated >= 7) return Math.round(basePrice * 0.7)
+  return basePrice
 }
