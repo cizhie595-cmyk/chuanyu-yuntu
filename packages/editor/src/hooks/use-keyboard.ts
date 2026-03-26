@@ -59,6 +59,9 @@ export const useKeyboard = () => {
       } else if (e.key === 'Z' && e.shiftKey && (e.metaKey || e.ctrlKey)) {
         e.preventDefault()
         useScene.temporal.getState().redo()
+      } else if (e.key === 'y' && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault()
+        useScene.temporal.getState().redo()
       } else if (e.key === 'ArrowUp' && (e.metaKey || e.ctrlKey)) {
         e.preventDefault()
         const { buildingId, levelId } = useViewer.getState().selection

@@ -300,7 +300,8 @@ export function EditorCommands() {
         label: '撤销',
         group: '历史记录',
         icon: <Undo2 className="h-4 w-4" />,
-        keywords: ['undo', 'revert', 'back'],
+        keywords: ['undo', 'revert', 'back', '撤销'],
+        shortcut: ['⌘Z'],
         execute: () => run(() => useScene.temporal.getState().undo()),
       },
       {
@@ -308,7 +309,8 @@ export function EditorCommands() {
         label: '重做',
         group: '历史记录',
         icon: <Redo2 className="h-4 w-4" />,
-        keywords: ['redo', 'forward', 'repeat'],
+        keywords: ['redo', 'forward', 'repeat', '重做'],
+        shortcut: ['⌘Y'],
         execute: () => run(() => useScene.temporal.getState().redo()),
       },
 
