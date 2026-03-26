@@ -1,0 +1,7 @@
+# 川渝云图 - 农村自建房3D设计工具
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /market/orders
+
+Sitemap: https://chuanyu-yuntu.vercel.app/sitemap.xml

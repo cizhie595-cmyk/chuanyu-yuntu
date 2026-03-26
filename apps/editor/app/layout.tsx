@@ -27,6 +27,7 @@ export const metadata: Metadata = {
   description:
     '免费在线3D别墅设计工具，支持墙体、门窗、屋顶、家具布局，一键生成3D效果图。专为川渝地区农村自建房打造。',
   keywords: ['川渝云图', '农村自建房', '3D设计', '别墅设计', '自建房设计工具', '免费设计'],
+  manifest: '/manifest.json',
   openGraph: {
     title: '川渝云图 - 农村自建房3D设计工具',
     description: '免费在线3D别墅设计，一键生成效果图，匹配本地施工队',
@@ -47,6 +48,8 @@ export default function RootLayout({
       lang="zh-CN"
     >
       <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+        <meta name="theme-color" content="#0a0a0a" />
         {process.env.NODE_ENV === 'development' && (
           <Script
             crossOrigin="anonymous"

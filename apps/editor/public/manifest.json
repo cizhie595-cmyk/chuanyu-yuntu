@@ -1,0 +1,18 @@
+{
+  "name": "川渝云图 - 农村自建房3D设计工具",
+  "short_name": "川渝云图",
+  "description": "免费在线3D别墅设计工具，支持墙体、门窗、屋顶、家具布局，一键生成3D效果图",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0a0a",
+  "theme_color": "#0a0a0a",
+  "orientation": "landscape",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "any",
+      "type": "image/x-icon"
+    }
+  ],
+  "lang": "zh-CN"
+}
