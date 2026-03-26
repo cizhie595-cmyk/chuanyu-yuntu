@@ -1,41 +1,41 @@
-name: ✨ Feature Request
-description: Suggest a new feature or improvement
+name: ✨ 功能请求
+description: 建议新功能或改进
 labels: ["enhancement", "needs-triage"]
 body:
   - type: markdown
     attributes:
       value: |
-        We love hearing ideas from the community! Please describe what you'd like to see in Pascal Editor.
+        我们很乐意听取社区的想法！请描述您希望在川渝云图中看到的功能。
 
   - type: textarea
     id: problem
     attributes:
-      label: Problem or motivation
-      description: What problem does this solve? Why do you want this?
-      placeholder: I'm always frustrated when...
+      label: 问题或动机
+      description: 这解决了什么问题？您为什么需要这个功能？
+      placeholder: 我总是在...时感到困扰
     validations:
       required: true
 
   - type: textarea
     id: solution
     attributes:
-      label: Proposed solution
-      description: How do you think this should work?
+      label: 建议的解决方案
+      description: 您认为这应该如何工作？
     validations:
       required: false
 
   - type: textarea
     id: alternatives
     attributes:
-      label: Alternatives considered
-      description: Any workarounds or alternative approaches you've thought about?
+      label: 考虑过的替代方案
+      description: 您想到的任何变通方法或替代方案？
     validations:
       required: false
 
   - type: textarea
     id: additional
     attributes:
-      label: Additional context
-      description: Mockups, screenshots, references to other tools, etc.
+      label: 附加信息
+      description: 原型图、截图、其他工具的参考等。
     validations:
       required: false

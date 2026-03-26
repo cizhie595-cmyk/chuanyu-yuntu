@@ -1,55 +1,55 @@
-# Pascal Editor — Setup
+# 川渝云图 — 环境搭建
 
-## Prerequisites
+## 前置要求
 
-- [Bun](https://bun.sh/) 1.3+ (or Node.js 18+)
+- [Bun](https://bun.sh/) 1.3+（或 Node.js 18+）
 
-## Quick Start
+## 快速开始
 
 ```bash
 bun install
 bun dev
 ```
 
-The editor will be running at **http://localhost:3000**.
+编辑器将在 **http://localhost:3000** 运行。
 
-## Environment Variables (optional)
+## 环境变量（可选）
 
-Copy `.env.example` to `.env` if you need:
+如需配置环境变量，请复制 `.env.example` 为 `.env`：
 
 ```bash
 cp .env.example .env
 ```
 
-| Variable | Required | Description |
+| 变量 | 必填 | 描述 |
 |----------|----------|-------------|
-| `NEXT_PUBLIC_GOOGLE_MAPS_API_KEY` | No | Enables address search in the editor |
-| `PORT` | No | Dev server port (default: 3000) |
+| `NEXT_PUBLIC_AMAP_API_KEY` | 否 | 启用编辑器中的地址搜索功能（高德地图） |
+| `PORT` | 否 | 开发服务器端口（默认：3000） |
 
-The editor works fully without any environment variables.
+编辑器在没有任何环境变量的情况下也能完整运行。
 
-## Monorepo Structure
+## Monorepo 结构
 
 ```
 ├── apps/
-│   └── editor/          # Next.js editor application
+│   └── editor/          # Next.js 编辑器应用
 ├── packages/
-│   ├── core/            # @pascal-app/core — Scene schema, state, systems
-│   ├── viewer/          # @pascal-app/viewer — 3D rendering
-│   └── ui/              # Shared UI components
-└── tooling/             # Build & release tooling
+│   ├── core/            # @pascal-app/core — 场景模式、状态、系统
+│   ├── viewer/          # @pascal-app/viewer — 3D 渲染
+│   └── ui/              # 共享 UI 组件
+└── tooling/             # 构建与发布工具
 ```
 
-## Scripts
+## 脚本命令
 
-| Command | Description |
+| 命令 | 描述 |
 |---------|-------------|
-| `bun dev` | Start the development server |
-| `bun build` | Build all packages |
-| `bun check` | Lint and format check (Biome) |
-| `bun check:fix` | Auto-fix lint and format issues |
-| `bun check-types` | TypeScript type checking |
+| `bun dev` | 启动开发服务器 |
+| `bun build` | 构建所有包 |
+| `bun check` | 代码检查和格式化检查（Biome） |
+| `bun check:fix` | 自动修复代码检查和格式化问题 |
+| `bun check-types` | TypeScript 类型检查 |
 
-## Contributing
+## 贡献
 
-See [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines on submitting PRs and reporting issues.
+请参阅 [CONTRIBUTING.md](./CONTRIBUTING.md) 了解提交 PR 和报告问题的指南。

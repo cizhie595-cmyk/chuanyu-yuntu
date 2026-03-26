@@ -1,71 +1,71 @@
-# Contributing to Pascal Editor
+# 贡献指南 - 川渝云图
 
-Thanks for your interest in contributing! We welcome all kinds of contributions — bug fixes, new features, documentation, and ideas.
+感谢您有兴趣参与贡献！我们欢迎各种形式的贡献 — Bug 修复、新功能、文档和创意。
 
-## Getting started
+## 快速开始
 
-### Prerequisites
+### 前置要求
 
-- [Bun](https://bun.sh/) 1.3+ (or Node.js 18+)
+- [Bun](https://bun.sh/) 1.3+（或 Node.js 18+）
 
-### Setup
+### 环境搭建
 
 ```bash
-git clone https://github.com/pascalorg/editor.git
-cd editor
+git clone https://github.com/cizhie595-cmyk/chuanyu-yuntu.git
+cd chuanyu-yuntu
 bun install
 bun dev
 ```
 
-The editor will be running at **http://localhost:3000**. That's it!
+编辑器将在 **http://localhost:3000** 运行。就这么简单！
 
-### Optional
+### 可选配置
 
-Copy `.env.example` to `.env` and add a Google Maps API key if you want address search functionality. The editor works fully without it.
+将 `.env.example` 复制为 `.env`，添加高德地图 API Key 以启用地址搜索功能。编辑器在没有它的情况下也能完整运行。
 
-## Making changes
+## 提交更改
 
-### Code style
+### 代码风格
 
-We use [Biome](https://biomejs.dev/) for linting and formatting. Before submitting a PR:
+我们使用 [Biome](https://biomejs.dev/) 进行代码检查和格式化。提交 PR 前请运行：
 
 ```bash
-bun check        # Check for issues
-bun check:fix    # Auto-fix issues
+bun check        # 检查问题
+bun check:fix    # 自动修复问题
 ```
 
-### Project structure
+### 项目结构
 
-| Package | What it does |
+| 包 | 功能 |
 |---------|-------------|
-| `packages/core` | Scene schema, state management, systems — no UI |
-| `packages/viewer` | 3D rendering with React Three Fiber |
-| `apps/editor` | The full editor app (Next.js) |
+| `packages/core` | 场景模式、状态管理、系统 — 无 UI |
+| `packages/viewer` | 基于 React Three Fiber 的 3D 渲染 |
+| `apps/editor` | 完整的编辑器应用（Next.js） |
 
-A key rule: **`packages/viewer` must never import from `apps/editor`**. The viewer is a standalone component; editor-specific behavior is injected via props/children.
+关键规则：**`packages/viewer` 不得从 `apps/editor` 导入**。Viewer 是独立组件；编辑器特有行为通过 props/children 注入。
 
-## Submitting a PR
+## 提交 PR
 
-1. **Fork the repo** and create a branch from `main`
-2. **Make your changes** and test locally with `bun dev`
-3. **Run `bun check`** to make sure linting passes
-4. **Open a PR** with a clear description of what changed and why
-5. **Link related issues** if applicable (e.g., "Fixes #42")
+1. **Fork 仓库**并从 `main` 创建分支
+2. **进行更改**并使用 `bun dev` 在本地测试
+3. **运行 `bun check`** 确保代码检查通过
+4. **提交 PR**，清晰描述更改内容和原因
+5. **关联相关 Issue**（如适用，例如 "Fixes #42"）
 
-### PR tips
+### PR 建议
 
-- Keep PRs focused — one feature or fix per PR
-- Include screenshots or recordings for visual changes
-- If you're unsure about an approach, open an issue or discussion first
+- 保持 PR 聚焦 — 每个 PR 只包含一个功能或修复
+- 视觉变更请附上截图或录屏
+- 如果对实现方式不确定，请先创建 Issue 或讨论
 
-## Reporting bugs
+## 报告 Bug
 
-Use the [Bug Report](https://github.com/pascalorg/editor/issues/new?template=bug_report.yml) template. Include steps to reproduce — this helps us fix things faster.
+请在 [Issues](https://github.com/cizhie595-cmyk/chuanyu-yuntu/issues) 中提交 Bug 报告，包含复现步骤 — 这有助于我们更快修复问题。
 
-## Suggesting features
+## 功能建议
 
-Use the [Feature Request](https://github.com/pascalorg/editor/issues/new?template=feature_request.yml) template, or start a [Discussion](https://github.com/pascalorg/editor/discussions) if you want to brainstorm first.
+请在 [Issues](https://github.com/cizhie595-cmyk/chuanyu-yuntu/issues) 中提交功能请求，或在 [Discussions](https://github.com/cizhie595-cmyk/chuanyu-yuntu/discussions) 中发起讨论。
 
-## Questions?
+## 有问题？
 
-Head to [Discussions](https://github.com/pascalorg/editor/discussions) — we're happy to help!
+前往 [Discussions](https://github.com/cizhie595-cmyk/chuanyu-yuntu/discussions) — 我们很乐意帮助！

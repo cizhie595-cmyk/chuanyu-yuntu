@@ -1,35 +1,35 @@
 # @pascal-app/core
 
-Core library for Pascal 3D building editor.
+川渝云图 3D 建筑编辑器核心库。
 
-## Installation
+## 安装
 
 ```bash
 npm install @pascal-app/core
 ```
 
-## Peer Dependencies
+## 对等依赖
 
 ```bash
 npm install react three @react-three/fiber @react-three/drei
 ```
 
-## What's Included
+## 包含内容
 
-- **Node Schemas** - Zod schemas for all building primitives (walls, slabs, items, etc.)
-- **Scene State** - Zustand store with IndexedDB persistence and undo/redo
-- **Systems** - Geometry generation for walls, floors, ceilings, roofs
-- **Scene Registry** - Fast lookup from node IDs to Three.js objects
-- **Spatial Grid** - Collision detection and placement validation
-- **Event Bus** - Typed event emitter for inter-component communication
-- **Asset Storage** - IndexedDB-based file storage for user-uploaded assets
+- **节点模式** - 所有建筑原语的 Zod 模式（墙体、楼板、物品等）
+- **场景状态** - 支持 IndexedDB 持久化和撤销/重做的 Zustand Store
+- **系统** - 墙体、楼板、天花板、屋顶的几何生成
+- **场景注册表** - 从节点 ID 到 Three.js 对象的快速查找
+- **空间网格** - 碰撞检测和放置验证
+- **事件总线** - 类型化事件发射器，用于组件间通信
+- **资源存储** - 基于 IndexedDB 的用户上传资源文件存储
 
-## Usage
+## 使用方法
 
 ```typescript
 import { useScene, WallNode, ItemNode } from '@pascal-app/core'
 
-// Create a wall
+// 创建墙体
 const wall = WallNode.parse({
   points: [[0, 0], [5, 0]],
   height: 3,
@@ -38,39 +38,39 @@ const wall = WallNode.parse({
 
 useScene.getState().createNode(wall, parentLevelId)
 
-// Subscribe to scene changes
+// 订阅场景变化
 function MyComponent() {
   const nodes = useScene((state) => state.nodes)
   const walls = Object.values(nodes).filter(n => n.type === 'wall')
 
-  return <div>Total walls: {walls.length}</div>
+  return <div>墙体总数: {walls.length}</div>
 }
 ```
 
-## Node Types
+## 节点类型
 
-- `SiteNode` - Root container
-- `BuildingNode` - Building within a site
-- `LevelNode` - Floor level
-- `WallNode` - Vertical wall with optional openings
-- `SlabNode` - Floor slab
-- `CeilingNode` - Ceiling surface
-- `RoofNode` - Roof geometry
-- `ZoneNode` - Spatial zone/room
-- `ItemNode` - Furniture, fixtures, appliances
-- `ScanNode` - 3D scan reference
-- `GuideNode` - 2D guide image reference
+- `SiteNode` - 根容器（场地）
+- `BuildingNode` - 场地内的建筑
+- `LevelNode` - 楼层
+- `WallNode` - 垂直墙体，支持可选开口
+- `SlabNode` - 楼板
+- `CeilingNode` - 天花板
+- `RoofNode` - 屋顶几何体
+- `ZoneNode` - 空间区域/房间
+- `ItemNode` - 家具、固定装置、电器
+- `ScanNode` - 3D 扫描参考
+- `GuideNode` - 2D 参考图
 
-## Systems
+## 系统
 
-Systems process dirty nodes each frame to update geometry:
+系统每帧处理脏节点以更新几何体：
 
-- `WallSystem` - Wall geometry with mitering and CSG cutouts
-- `SlabSystem` - Floor polygon generation
-- `CeilingSystem` - Ceiling geometry
-- `RoofSystem` - Roof generation
-- `ItemSystem` - Item positioning on walls/ceilings/floors
+- `WallSystem` - 墙体几何体，支持斜接和 CSG 切割
+- `SlabSystem` - 楼板多边形生成
+- `CeilingSystem` - 天花板几何体
+- `RoofSystem` - 屋顶生成
+- `ItemSystem` - 物品在墙面/天花板/地面上的定位
 
-## License
+## 许可证
 
 MIT

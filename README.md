@@ -1,110 +1,106 @@
-# Pascal Editor
+# 川渝云图
 
-A 3D building editor built with React Three Fiber and WebGPU.
+农村自建房3D设计工具，基于 React Three Fiber 和 WebGPU 构建。
 
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![npm @pascal-app/core](https://img.shields.io/npm/v/@pascal-app/core?label=%40pascal-app%2Fcore&color=cb3837)](https://www.npmjs.com/package/@pascal-app/core)
-[![npm @pascal-app/viewer](https://img.shields.io/npm/v/@pascal-app/viewer?label=%40pascal-app%2Fviewer&color=cb3837)](https://www.npmjs.com/package/@pascal-app/viewer)
-[![Discord](https://img.shields.io/discord/1430943778449002577?label=Discord&logo=discord&logoColor=white&color=5865F2)](https://discord.gg/SaBRA9t2)
-[![X (Twitter)](https://img.shields.io/badge/follow-%40pascal__app-black?logo=x&logoColor=white)](https://x.com/pascal_app)
 
 https://github.com/user-attachments/assets/8b50e7cf-cebe-4579-9cf3-8786b35f7b6b
 
 
 
-## Repository Architecture
+## 项目架构
 
-This is a Turborepo monorepo with three main packages:
+本项目采用 Turborepo monorepo 架构，包含三个主要包：
 
 ```
-editor-v2/
+chuanyu-yuntu/
 ├── apps/
-│   └── editor/          # Next.js application
+│   └── editor/          # Next.js 应用（川渝云图主站）
 ├── packages/
-│   ├── core/            # Schema definitions, state management, systems
-│   └── viewer/          # 3D rendering components
+│   ├── core/            # 节点定义、状态管理、几何系统
+│   └── viewer/          # 3D 渲染组件
 ```
 
-### Separation of Concerns
+### 职责分离
 
-| Package | Responsibility |
+| 包 | 职责 |
 |---------|---------------|
-| **@pascal-app/core** | Node schemas, scene state (Zustand), systems (geometry generation), spatial queries, event bus |
-| **@pascal-app/viewer** | 3D rendering via React Three Fiber, default camera/controls, post-processing |
-| **apps/editor** | UI components, tools, custom behaviors, editor-specific systems |
+| **@pascal-app/core** | 节点模式定义、场景状态（Zustand）、几何生成系统、空间查询、事件总线 |
+| **@pascal-app/viewer** | 基于 React Three Fiber 的 3D 渲染、默认相机/控制器、后处理 |
+| **apps/editor** | UI 组件、工具、自定义行为、编辑器特有系统 |
 
-The **viewer** renders the scene with sensible defaults. The **editor** extends it with interactive tools, selection management, and editing capabilities.
+**viewer** 负责以合理默认值渲染场景。**editor** 在此基础上扩展交互工具、选择管理和编辑功能。
 
-### Stores
+### 状态管理
 
-Each package has its own Zustand store for managing state:
+每个包有独立的 Zustand Store 管理状态：
 
-| Store | Package | Responsibility |
+| Store | 所属包 | 职责 |
 |-------|---------|----------------|
-| `useScene` | `@pascal-app/core` | Scene data: nodes, root IDs, dirty nodes, CRUD operations. Persisted to IndexedDB with undo/redo via Zundo. |
-| `useViewer` | `@pascal-app/viewer` | Viewer state: current selection (building/level/zone IDs), level display mode (stacked/exploded/solo), camera mode. |
-| `useEditor` | `apps/editor` | Editor state: active tool, structure layer visibility, panel states, editor-specific preferences. |
+| `useScene` | `@pascal-app/core` | 场景数据：节点、根ID、脏节点、CRUD操作。通过 IndexedDB 持久化，Zundo 支持撤销/重做。 |
+| `useViewer` | `@pascal-app/viewer` | 视图状态：当前选择（建筑/楼层/区域ID）、楼层显示模式（堆叠/展开/独立）、相机模式。 |
+| `useEditor` | `apps/editor` | 编辑器状态：当前工具、结构层可见性、面板状态、编辑器偏好设置。 |
 
-**Access patterns:**
+**访问模式：**
 
 ```typescript
-// Subscribe to state changes (React component)
+// 在 React 组件中订阅状态变化
 const nodes = useScene((state) => state.nodes)
 const levelId = useViewer((state) => state.selection.levelId)
 const activeTool = useEditor((state) => state.tool)
 
-// Access state outside React (callbacks, systems)
+// 在 React 外部访问状态（回调、系统）
 const node = useScene.getState().nodes[id]
 useViewer.getState().setSelection({ levelId: 'level_123' })
 ```
 
 ---
 
-## Core Concepts
+## 核心概念
 
-### Nodes
+### 节点（Nodes）
 
-Nodes are the data primitives that describe the 3D scene. All nodes extend `BaseNode`:
+节点是描述3D场景的数据原语。所有节点继承自 `BaseNode`：
 
 ```typescript
 BaseNode {
-  id: string              // Auto-generated with type prefix (e.g., "wall_abc123")
-  type: string            // Discriminator for type-safe handling
-  parentId: string | null // Parent node reference
+  id: string              // 自动生成，带类型前缀（如 "wall_abc123"）
+  type: string            // 类型判别符，用于类型安全处理
+  parentId: string | null // 父节点引用
   visible: boolean
-  camera?: Camera         // Optional saved camera position
-  metadata?: JSON         // Arbitrary metadata (e.g., { isTransient: true })
+  camera?: Camera         // 可选的保存相机位置
+  metadata?: JSON         // 任意元数据（如 { isTransient: true }）
 }
 ```
 
-**Node Hierarchy:**
+**节点层级：**
 
 ```
-Site
-└── Building
-    └── Level
-        ├── Wall → Item (doors, windows)
-        ├── Slab
-        ├── Ceiling → Item (lights)
-        ├── Roof
-        ├── Zone
-        ├── Scan (3D reference)
-        └── Guide (2D reference)
+Site（场地）
+└── Building（建筑）
+    └── Level（楼层）
+        ├── Wall（墙体）→ Item（门、窗）
+        ├── Slab（楼板）
+        ├── Ceiling（天花板）→ Item（灯具）
+        ├── Roof（屋顶）
+        ├── Zone（区域）
+        ├── Scan（3D参考）
+        └── Guide（2D参考）
 ```
 
-Nodes are stored in a **flat dictionary** (`Record<id, Node>`), not a nested tree. Parent-child relationships are defined via `parentId` and `children` arrays.
+节点存储在**扁平字典**（`Record<id, Node>`）中，而非嵌套树。父子关系通过 `parentId` 和 `children` 数组定义。
 
 ---
 
-### Scene State (Zustand Store)
+### 场景状态（Zustand Store）
 
-The scene is managed by a Zustand store in `@pascal-app/core`:
+场景由 `@pascal-app/core` 中的 Zustand Store 管理：
 
 ```typescript
 useScene.getState() = {
-  nodes: Record<id, AnyNode>,  // All nodes
-  rootNodeIds: string[],       // Top-level nodes (sites)
-  dirtyNodes: Set<string>,     // Nodes pending system updates
+  nodes: Record<id, AnyNode>,  // 所有节点
+  rootNodeIds: string[],       // 顶层节点（场地）
+  dirtyNodes: Set<string>,     // 待系统更新的节点
 
   createNode(node, parentId),
   updateNode(id, updates),
@@ -112,19 +108,19 @@ useScene.getState() = {
 }
 ```
 
-**Middleware:**
-- **Persist** - Saves to IndexedDB (excludes transient nodes)
-- **Temporal** (Zundo) - Undo/redo with 50-step history
+**中间件：**
+- **Persist** - 保存到 IndexedDB（排除临时节点）
+- **Temporal**（Zundo）- 50步历史的撤销/重做
 
 ---
 
-### Scene Registry
+### 场景注册表
 
-The registry maps node IDs to their Three.js objects for fast lookup:
+注册表将节点ID映射到 Three.js 对象，实现快速查找：
 
 ```typescript
 sceneRegistry = {
-  nodes: Map<id, Object3D>,    // ID → 3D object
+  nodes: Map<id, Object3D>,    // ID → 3D 对象
   byType: {
     wall: Set<id>,
     item: Set<id>,
@@ -134,24 +130,24 @@ sceneRegistry = {
 }
 ```
 
-Renderers register their refs using the `useRegistry` hook:
+渲染器通过 `useRegistry` Hook 注册其引用：
 
 ```tsx
 const ref = useRef<Mesh>(null!)
 useRegistry(node.id, 'wall', ref)
 ```
 
-This allows systems to access 3D objects directly without traversing the scene graph.
+这使系统可以直接访问3D对象，无需遍历场景图。
 
 ---
 
-### Node Renderers
+### 节点渲染器
 
-Renderers are React components that create Three.js objects for each node type:
+渲染器是为每种节点类型创建 Three.js 对象的 React 组件：
 
 ```
 SceneRenderer
-└── NodeRenderer (dispatches by type)
+└── NodeRenderer（按类型分发）
     ├── BuildingRenderer
     ├── LevelRenderer
     ├── WallRenderer
@@ -161,12 +157,12 @@ SceneRenderer
     └── ...
 ```
 
-**Pattern:**
-1. Renderer creates a placeholder mesh/group
-2. Registers it with `useRegistry`
-3. Systems update geometry based on node data
+**模式：**
+1. 渲染器创建占位网格/组
+2. 通过 `useRegistry` 注册
+3. 系统根据节点数据更新几何体
 
-Example (simplified):
+示例（简化版）：
 ```tsx
 const WallRenderer = ({ node }) => {
   const ref = useRef<Mesh>(null!)
@@ -174,7 +170,7 @@ const WallRenderer = ({ node }) => {
 
   return (
     <mesh ref={ref}>
-      <boxGeometry args={[0, 0, 0]} />  {/* Replaced by WallSystem */}
+      <boxGeometry args={[0, 0, 0]} />  {/* 由 WallSystem 替换 */}
       <meshStandardMaterial />
       {node.children.map(id => <NodeRenderer key={id} nodeId={id} />)}
     </mesh>
@@ -184,36 +180,36 @@ const WallRenderer = ({ node }) => {
 
 ---
 
-### Systems
+### 系统（Systems）
 
-Systems are React components that run in the render loop (`useFrame`) to update geometry and transforms. They process **dirty nodes** marked by the store.
+系统是在渲染循环（`useFrame`）中运行的 React 组件，用于更新几何体和变换。它们处理 Store 标记的**脏节点**。
 
-**Core Systems (in `@pascal-app/core`):**
+**核心系统（`@pascal-app/core`）：**
 
-| System | Responsibility |
+| 系统 | 职责 |
 |--------|---------------|
-| `WallSystem` | Generates wall geometry with mitering and CSG cutouts for doors/windows |
-| `SlabSystem` | Generates floor geometry from polygons |
-| `CeilingSystem` | Generates ceiling geometry |
-| `RoofSystem` | Generates roof geometry |
-| `ItemSystem` | Positions items on walls, ceilings, or floors (slab elevation) |
+| `WallSystem` | 生成墙体几何体，支持斜接和门窗CSG切割 |
+| `SlabSystem` | 从多边形生成楼板几何体 |
+| `CeilingSystem` | 生成天花板几何体 |
+| `RoofSystem` | 生成屋顶几何体 |
+| `ItemSystem` | 将物品放置在墙面、天花板或地面上（楼板高程） |
 
-**Viewer Systems (in `@pascal-app/viewer`):**
+**视图系统（`@pascal-app/viewer`）：**
 
-| System | Responsibility |
+| 系统 | 职责 |
 |--------|---------------|
-| `LevelSystem` | Handles level visibility and vertical positioning (stacked/exploded/solo modes) |
-| `ScanSystem` | Controls 3D scan visibility |
-| `GuideSystem` | Controls guide image visibility |
+| `LevelSystem` | 处理楼层可见性和垂直定位（堆叠/展开/独立模式） |
+| `ScanSystem` | 控制3D扫描可见性 |
+| `GuideSystem` | 控制参考图可见性 |
 
-**Processing Pattern:**
+**处理模式：**
 ```typescript
 useFrame(() => {
   for (const id of dirtyNodes) {
     const obj = sceneRegistry.nodes.get(id)
     const node = useScene.getState().nodes[id]
 
-    // Update geometry, transforms, etc.
+    // 更新几何体、变换等
     updateGeometry(obj, node)
 
     dirtyNodes.delete(id)
@@ -223,39 +219,39 @@ useFrame(() => {
 
 ---
 
-### Dirty Nodes
+### 脏节点
 
-When a node changes, it's marked as **dirty** in `useScene.getState().dirtyNodes`. Systems check this set each frame and only recompute geometry for dirty nodes.
+当节点发生变化时，会在 `useScene.getState().dirtyNodes` 中标记为**脏**。系统每帧检查此集合，仅为脏节点重新计算几何体。
 
 ```typescript
-// Automatic: createNode, updateNode, deleteNode mark nodes dirty
+// 自动标记：createNode、updateNode、deleteNode 会标记节点为脏
 useScene.getState().updateNode(wallId, { thickness: 0.2 })
-// → wallId added to dirtyNodes
-// → WallSystem regenerates geometry next frame
-// → wallId removed from dirtyNodes
+// → wallId 添加到 dirtyNodes
+// → WallSystem 在下一帧重新生成几何体
+// → wallId 从 dirtyNodes 移除
 ```
 
-**Manual marking:**
+**手动标记：**
 ```typescript
 useScene.getState().dirtyNodes.add(wallId)
 ```
 
 ---
 
-### Event Bus
+### 事件总线
 
-Inter-component communication uses a typed event emitter (mitt):
+组件间通信使用类型化事件发射器（mitt）：
 
 ```typescript
-// Node events
+// 节点事件
 emitter.on('wall:click', (event) => { ... })
 emitter.on('item:enter', (event) => { ... })
 emitter.on('zone:context-menu', (event) => { ... })
 
-// Grid events (background)
+// 网格事件（背景）
 emitter.on('grid:click', (event) => { ... })
 
-// Event payload
+// 事件载荷
 NodeEvent {
   node: AnyNode
   position: [x, y, z]
@@ -267,9 +263,9 @@ NodeEvent {
 
 ---
 
-### Spatial Grid Manager
+### 空间网格管理器
 
-Handles collision detection and placement validation:
+处理碰撞检测和放置验证：
 
 ```typescript
 spatialGridManager.canPlaceOnFloor(levelId, position, dimensions, rotation)
@@ -277,142 +273,120 @@ spatialGridManager.canPlaceOnWall(wallId, t, height, dimensions)
 spatialGridManager.getSlabElevationAt(levelId, x, z)
 ```
 
-Used by item placement tools to validate positions and calculate slab elevations.
+物品放置工具使用它来验证位置和计算楼板高程。
 
 ---
 
-## Editor Architecture
+## 编辑器架构
 
-The editor extends the viewer with:
+编辑器在 viewer 基础上扩展了：
 
-### Tools
+### 工具
 
-Tools are activated via the toolbar and handle user input for specific operations:
+工具通过工具栏激活，处理特定操作的用户输入：
 
-- **SelectTool** - Selection and manipulation
-- **WallTool** - Draw walls
-- **ZoneTool** - Create zones
-- **ItemTool** - Place furniture/fixtures
-- **SlabTool** - Create floor slabs
+- **选择工具** - 选择和操作
+- **墙体工具** - 绘制墙体
+- **区域工具** - 创建区域
+- **物品工具** - 放置家具/固定装置
+- **楼板工具** - 创建楼板
 
-### Selection Manager
+### 选择管理器
 
-The editor uses a custom selection manager with hierarchical navigation:
+编辑器使用自定义选择管理器，支持层级导航：
 
 ```
-Site → Building → Level → Zone → Items
+场地 → 建筑 → 楼层 → 区域 → 物品
 ```
 
-Each depth level has its own selection strategy for hover/click behavior.
+每个深度层级有自己的悬停/点击选择策略。
 
-### Editor-Specific Systems
+### 编辑器特有系统
 
-- `ZoneSystem` - Controls zone visibility based on level mode
-- Custom camera controls with node focusing
+- `ZoneSystem` - 根据楼层模式控制区域可见性
+- 自定义相机控制，支持节点聚焦
 
 ---
 
-## Data Flow
+## 数据流
 
 ```
-User Action (click, drag)
+用户操作（点击、拖拽）
        ↓
-Tool Handler
+工具处理器
        ↓
 useScene.createNode() / updateNode()
        ↓
-Node added/updated in store
-Node marked dirty
+节点在 Store 中添加/更新
+节点标记为脏
        ↓
-React re-renders NodeRenderer
-useRegistry() registers 3D object
+React 重新渲染 NodeRenderer
+useRegistry() 注册 3D 对象
        ↓
-System detects dirty node (useFrame)
-Updates geometry via sceneRegistry
-Clears dirty flag
+系统检测到脏节点（useFrame）
+通过 sceneRegistry 更新几何体
+清除脏标记
 ```
 
 ---
 
-## Technology Stack
+## 技术栈
 
 - **React 19** + **Next.js 16**
-- **Three.js** (WebGPU renderer)
+- **Three.js**（WebGPU 渲染器）
 - **React Three Fiber** + **Drei**
-- **Zustand** (state management)
-- **Zod** (schema validation)
-- **Zundo** (undo/redo)
-- **three-bvh-csg** (Boolean geometry operations)
-- **Turborepo** (monorepo management)
-- **Bun** (package manager)
+- **Zustand**（状态管理）
+- **Zod**（模式验证）
+- **Zundo**（撤销/重做）
+- **three-bvh-csg**（布尔几何运算）
+- **Turborepo**（monorepo 管理）
+- **Bun**（包管理器）
 
 ---
 
-## Getting Started
+## 快速开始
 
-### Development
+### 开发环境
 
-Run the development server from the **root directory** to enable hot reload for all packages:
+从**根目录**运行开发服务器，以启用所有包的热重载：
 
 ```bash
-# Install dependencies
+# 安装依赖
 bun install
 
-# Run development server (builds packages + starts editor with watch mode)
+# 运行开发服务器（构建包 + 启动编辑器的监听模式）
 bun dev
 
-# This will:
-# 1. Build @pascal-app/core and @pascal-app/viewer
-# 2. Start watching both packages for changes
-# 3. Start the Next.js editor dev server
-# Open http://localhost:3000
+# 这将：
+# 1. 构建 @pascal-app/core 和 @pascal-app/viewer
+# 2. 开始监听两个包的文件变化
+# 3. 启动 Next.js 编辑器开发服务器
+# 打开 http://localhost:3000
 ```
 
-**Important:** Always run `bun dev` from the root directory to ensure the package watchers are running. This enables hot reload when you edit files in `packages/core/src/` or `packages/viewer/src/`.
+**重要：** 始终从根目录运行 `bun dev`，以确保包监听器正在运行。这样在编辑 `packages/core/src/` 或 `packages/viewer/src/` 中的文件时可以实现热重载。
 
-### Building for Production
+### 生产构建
 
 ```bash
-# Build all packages
+# 构建所有包
 turbo build
 
-# Build specific package
+# 构建特定包
 turbo build --filter=@pascal-app/core
 ```
 
-### Publishing Packages
-
-```bash
-# Build packages
-turbo build --filter=@pascal-app/core --filter=@pascal-app/viewer
-
-# Publish to npm
-npm publish --workspace=@pascal-app/core --access public
-npm publish --workspace=@pascal-app/viewer --access public
-```
-
 ---
 
-## Key Files
+## 关键文件
 
-| Path | Description |
+| 路径 | 描述 |
 |------|-------------|
-| `packages/core/src/schema/` | Node type definitions (Zod schemas) |
-| `packages/core/src/store/use-scene.ts` | Scene state store |
-| `packages/core/src/hooks/scene-registry/` | 3D object registry |
-| `packages/core/src/systems/` | Geometry generation systems |
-| `packages/viewer/src/components/renderers/` | Node renderers |
-| `packages/viewer/src/components/viewer/` | Main Viewer component |
-| `apps/editor/components/tools/` | Editor tools |
-| `apps/editor/store/` | Editor-specific state |
-
----
-
-## Contributors
-
-<a href="https://github.com/Aymericr"><img src="https://avatars.githubusercontent.com/u/4444492?v=4" width="60" height="60" alt="Aymeric Rabot" style="border-radius:50%"></a>
-<a href="https://github.com/wass08"><img src="https://avatars.githubusercontent.com/u/6551176?v=4" width="60" height="60" alt="Wassim Samad" style="border-radius:50%"></a>
-
----
-
-<a href="https://trendshift.io/repositories/23831" target="_blank"><img src="https://trendshift.io/api/badge/repositories/23831" alt="pascalorg/editor | Trendshift" width="250" height="55"/></a>
+| `packages/core/src/schema/` | 节点类型定义（Zod 模式） |
+| `packages/core/src/store/use-scene.ts` | 场景状态 Store |
+| `packages/core/src/hooks/scene-registry/` | 3D 对象注册表 |
+| `packages/core/src/systems/` | 几何生成系统 |
+| `packages/viewer/src/components/renderers/` | 节点渲染器 |
+| `packages/viewer/src/components/viewer/` | 主 Viewer 组件 |
+| `apps/editor/components/tools/` | 编辑器工具 |
+| `apps/editor/store/` | 编辑器特有状态 |

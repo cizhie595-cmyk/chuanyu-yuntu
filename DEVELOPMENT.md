@@ -4,7 +4,7 @@
 
 ## 一、 技术架构概览
 
-本项目基于开源的 Pascal Editor 深度定制，采用 Turbo Monorepo 架构。
+本项目基于开源 3D 建筑编辑器深度定制，采用 Turbo Monorepo 架构。
 
 ### 1.1 核心技术栈
 - **前端框架**: Next.js 16 (App Router) + React 19 + TypeScript 5.9

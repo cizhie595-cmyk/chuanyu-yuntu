@@ -1,7 +1,7 @@
 {
   "name": "@pascal-app/editor",
   "version": "0.1.0",
-  "description": "Pascal building editor component",
+  "description": "川渝云图建筑编辑器组件",
   "type": "module",
   "exports": {
     ".": "./src/index.tsx"

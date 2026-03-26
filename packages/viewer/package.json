@@ -1,7 +1,7 @@
 {
   "name": "@pascal-app/viewer",
   "version": "0.3.0",
-  "description": "3D viewer component for Pascal building editor",
+  "description": "川渝云图 3D 建筑查看器组件",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -51,10 +51,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/pascalorg/editor.git",
+    "url": "https://github.com/cizhie595-cmyk/chuanyu-yuntu.git",
     "directory": "packages/viewer"
   },
   "license": "MIT",
-  "homepage": "https://github.com/pascalorg/editor/tree/main/packages/viewer#readme",
-  "bugs": "https://github.com/pascalorg/editor/issues"
+  "homepage": "https://github.com/cizhie595-cmyk/chuanyu-yuntu/tree/main/packages/viewer#readme",
+  "bugs": "https://github.com/cizhie595-cmyk/chuanyu-yuntu/issues"
 }

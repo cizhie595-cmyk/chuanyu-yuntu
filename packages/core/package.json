@@ -1,7 +1,7 @@
 {
   "name": "@pascal-app/core",
   "version": "0.3.0",
-  "description": "Core library for Pascal 3D building editor",
+  "description": "川渝云图 3D 建筑编辑器核心库",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -54,10 +54,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/pascalorg/editor.git",
+    "url": "https://github.com/cizhie595-cmyk/chuanyu-yuntu.git",
     "directory": "packages/core"
   },
   "license": "MIT",
-  "homepage": "https://github.com/pascalorg/editor/tree/main/packages/core#readme",
-  "bugs": "https://github.com/pascalorg/editor/issues"
+  "homepage": "https://github.com/cizhie595-cmyk/chuanyu-yuntu/tree/main/packages/core#readme",
+  "bugs": "https://github.com/cizhie595-cmyk/chuanyu-yuntu/issues"
 }

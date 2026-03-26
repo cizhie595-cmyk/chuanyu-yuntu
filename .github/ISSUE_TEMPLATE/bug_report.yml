@@ -1,46 +1,46 @@
-name: 🐛 Bug Report
-description: Report something that isn't working correctly
+name: 🐛 Bug 报告
+description: 报告不正常工作的问题
 labels: ["bug", "needs-triage"]
 body:
   - type: markdown
     attributes:
       value: |
-        Thanks for taking the time to report a bug! Please fill out the sections below so we can reproduce and fix the issue.
+        感谢您花时间报告 Bug！请填写以下部分，以便我们能够复现并修复问题。
 
   - type: textarea
     id: description
     attributes:
-      label: What happened?
-      description: A clear description of the bug.
-      placeholder: Describe what went wrong...
+      label: 发生了什么？
+      description: 清晰描述这个 Bug。
+      placeholder: 描述出了什么问题...
     validations:
       required: true
 
   - type: textarea
     id: steps
     attributes:
-      label: Steps to reproduce
-      description: How can we reproduce the issue?
+      label: 复现步骤
+      description: 我们如何复现这个问题？
       placeholder: |
-        1. Go to '...'
-        2. Click on '...'
-        3. See error
+        1. 进入 '...'
+        2. 点击 '...'
+        3. 看到错误
     validations:
       required: true
 
   - type: textarea
     id: expected
     attributes:
-      label: Expected behavior
-      description: What did you expect to happen?
+      label: 预期行为
+      description: 您期望发生什么？
     validations:
       required: true
 
   - type: input
     id: browser
     attributes:
-      label: Browser & OS
-      description: e.g. Chrome 120, macOS 14
+      label: 浏览器和操作系统
+      description: 例如 Chrome 120, macOS 14
       placeholder: Chrome 120, macOS 14
     validations:
       required: false
@@ -48,15 +48,15 @@ body:
   - type: textarea
     id: screenshots
     attributes:
-      label: Screenshots or screen recordings
-      description: If applicable, add screenshots or a short video to help explain the problem.
+      label: 截图或录屏
+      description: 如适用，请添加截图或短视频来帮助说明问题。
     validations:
       required: false
 
   - type: textarea
     id: additional
     attributes:
-      label: Additional context
-      description: Any other information that might be helpful (console errors, related issues, etc.)
+      label: 附加信息
+      description: 任何可能有帮助的其他信息（控制台错误、相关 Issue 等）
     validations:
       required: false
