@@ -40,11 +40,11 @@ export default function SharePreviewPage() {
   const [submitting, setSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
 
-  // ── 加载场景数据 ────────────────────────────────────────────────────────
+  // ── 加载场景数据（修复：使用正确的分享码 API 路径）────────────────────
   useEffect(() => {
     async function loadScene() {
       try {
-        const response = await fetch(`/api/projects/${code}`)
+        const response = await fetch(`/api/projects/share/${code}`)
         if (!response.ok) {
           if (response.status === 404) {
             setLoadingState('not-found')
@@ -94,11 +94,14 @@ export default function SharePreviewPage() {
           source: 'h5_share',
         }),
       })
+
+      const data = await response.json()
+
       if (response.ok) {
         setSubmitted(true)
         setShowLeadForm(false)
       } else {
-        alert('提交失败，请稍后重试')
+        alert(data.error || '提交失败，请稍后重试')
       }
     } catch {
       alert('网络错误，请稍后重试')
