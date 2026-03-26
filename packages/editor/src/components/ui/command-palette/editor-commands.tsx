@@ -353,7 +353,31 @@ export function EditorCommands() {
         group: '导出与分享',
         icon: <Copy className="h-4 w-4" />,
         keywords: ['share', 'copy', 'url', 'link'],
-        execute: () => run(() => navigator.clipboard.writeText(window.location.href)),
+        execute: () =>
+          run(async () => {
+            try {
+              // 尝试通过 API 生成分享码
+              const projectId = useViewer.getState().projectId
+              if (projectId && projectId !== 'local-editor') {
+                const { nodes, rootNodeIds } = useScene.getState()
+                const res = await fetch(`/api/projects/${projectId}/sync`, {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ scene_data: { nodes, rootNodeIds } }),
+                })
+                const data = await res.json()
+                if (data.share_code) {
+                  const shareUrl = `${window.location.origin}/share/${data.share_code}`
+                  await navigator.clipboard.writeText(shareUrl)
+                  return
+                }
+              }
+              // 未登录或本地项目，复制当前 URL
+              await navigator.clipboard.writeText(window.location.href)
+            } catch {
+              await navigator.clipboard.writeText(window.location.href)
+            }
+          }),
       },
       {
         id: 'editor.export.screenshot',
