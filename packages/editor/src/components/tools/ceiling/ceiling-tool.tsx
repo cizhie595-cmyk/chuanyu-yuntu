@@ -57,7 +57,7 @@ const commitCeilingDrawing = (
 
   // Count existing ceilings for naming
   const ceilingCount = Object.values(nodes).filter((n) => n.type === 'ceiling').length
-  const name = `Ceiling ${ceilingCount + 1}`
+  const name = `天花板 ${ceilingCount + 1}`
 
   const ceiling = CeilingNode.parse({
     name,

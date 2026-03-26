@@ -322,7 +322,8 @@ function EmptyState({ tab, isAuthenticated }: { tab: PresetsTab; isAuthenticated
         {tab === 'community'
           ? '暂无社区预设。'
           : isAuthenticated
-            '暂无保存的预设。使用"保存新预设"保存当前配置。'            : '登录后可保存和查看您的预设。'}
+            ? '暂无保存的预设。使用"保存新预设"保存当前配置。'
+            : '登录后可保存和查看您的预设。'}
       </p>
     </div>
   )

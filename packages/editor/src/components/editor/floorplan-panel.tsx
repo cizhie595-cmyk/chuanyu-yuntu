@@ -2074,7 +2074,7 @@ function FloorplanGuideHandleHint({
             rotationModifierPressed ? 'opacity-40' : 'opacity-100',
           )}
         >
-          <span className="font-medium text-[11px] lowercase leading-none">resize</span>
+          <span className="font-medium text-[11px] lowercase leading-none">缩放</span>
           <Icon
             aria-hidden="true"
             className="h-3.5 w-3.5 shrink-0"
@@ -2089,7 +2089,7 @@ function FloorplanGuideHandleHint({
             rotationModifierPressed ? 'opacity-100' : 'opacity-40',
           )}
         >
-          <span className="font-medium text-[11px] lowercase leading-none">rotate</span>
+          <span className="font-medium text-[11px] lowercase leading-none">旋转</span>
           {isMacPlatform ? (
             <Command aria-hidden="true" className="h-3.5 w-3.5 shrink-0" strokeWidth={2.2} />
           ) : (
@@ -3358,7 +3358,7 @@ export function FloorplanPanel() {
     : null
   const hasGuideImages = levelGuides.length > 0
   const guideImagesDescription = hasGuideImages
-    ? `${levelGuides.length} guide image${levelGuides.length === 1 ? '' : 's'} on this level`
+    ? `此楼层有 ${levelGuides.length} 张参考图`
     : '此楼层暂无参考图'
 
   const handleGuideOpacityChange = useCallback(
@@ -4587,7 +4587,7 @@ export function FloorplanPanel() {
       const { createNode, nodes } = useScene.getState()
       const slabCount = Object.values(nodes).filter((node) => node.type === 'slab').length
       const slab = SlabNode.parse({
-        name: `Slab ${slabCount + 1}`,
+        name: `楼板 ${slabCount + 1}`,
         polygon: points.map(([x, z]) => [x, z] as [number, number]),
       })
 
@@ -4608,7 +4608,7 @@ export function FloorplanPanel() {
       const zoneCount = Object.values(nodes).filter((node) => node.type === 'zone').length
       const zone = ZoneNodeSchema.parse({
         color: PALETTE_COLORS[zoneCount % PALETTE_COLORS.length],
-        name: `Zone ${zoneCount + 1}`,
+        name: `区域 ${zoneCount + 1}`,
         polygon: points.map(([x, z]) => [x, z] as [number, number]),
       })
 
@@ -7048,7 +7048,7 @@ export function FloorplanPanel() {
                       />
                     </span>
                     <div className="min-w-0">
-                      <p className="font-medium text-foreground text-sm">Guide images</p>
+                      <p className="font-medium text-foreground text-sm">参考图</p>
                       <p className="text-muted-foreground text-xs">{guideImagesDescription}</p>
                     </div>
                   </div>
@@ -7068,7 +7068,7 @@ export function FloorplanPanel() {
                               src="/icons/floorplan.png"
                             />
                             <p className="truncate font-medium text-foreground text-sm">
-                              {guide.name || `Guide image ${index + 1}`}
+                              {guide.name || `参考图 ${index + 1}`}
                             </p>
                           </div>
 
@@ -7087,7 +7087,7 @@ export function FloorplanPanel() {
                     </div>
                   ) : (
                     <div className="rounded-xl border border-border/45 border-dashed bg-background/60 px-3 py-4 text-muted-foreground text-sm">
-                      No guide images on this level yet.
+                      此楼层暂无参考图。
                     </div>
                   )}
                 </div>
@@ -7103,7 +7103,7 @@ export function FloorplanPanel() {
                 <Tooltip key={quickTool.id}>
                   <TooltipTrigger asChild>
                     <button
-                      aria-label={`Activate ${quickTool.label.toLowerCase()} tool`}
+                      aria-label={`激活${quickTool.label}工具`}
                       aria-pressed={isActive}
                       className={cn(
                         'flex h-8 w-8 items-center justify-center rounded-lg transition-[background-color,filter,opacity,transform] duration-200 active:scale-[0.96]',

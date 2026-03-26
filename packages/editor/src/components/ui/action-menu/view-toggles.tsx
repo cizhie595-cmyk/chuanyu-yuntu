@@ -30,18 +30,18 @@ const wallModeConfig: Record<
 > = {
   up: {
     icon: (props) => (
-      <img alt="Full Height" height={20} src="/icons/room.png" width={20} {...props} />
+      <img alt="全高" height={20} src="/icons/room.png" width={20} {...props} />
     ),
     label: '全高',
   },
   cutaway: {
     icon: (props) => (
-      <img alt="Cutaway" height={20} src="/icons/wallcut.png" width={20} {...props} />
+      <img alt="剖切" height={20} src="/icons/wallcut.png" width={20} {...props} />
     ),
     label: '剖切',
   },
   down: {
-    icon: (props) => <img alt="Low" height={20} src="/icons/walllow.png" width={20} {...props} />,
+    icon: (props) => <img alt="低墙" height={20} src="/icons/walllow.png" width={20} {...props} />,
     label: '低墙',
   },
 }
@@ -167,7 +167,7 @@ export function ViewToggles() {
         size="icon"
         variant="ghost"
       >
-        <img alt="Scans" className="h-[28px] w-[28px] object-contain" src="/icons/mesh.png" />
+        <img alt="扫描" className="h-[28px] w-[28px] object-contain" src="/icons/mesh.png" />
       </ActionButton>
 
       {/* Show Guides */}
@@ -183,7 +183,7 @@ export function ViewToggles() {
         size="icon"
         variant="ghost"
       >
-        <img alt="Guides" className="h-[28px] w-[28px] object-contain" src="/icons/floorplan.png" />
+        <img alt="参考图" className="h-[28px] w-[28px] object-contain" src="/icons/floorplan.png" />
       </ActionButton>
 
       <ActionButton
@@ -195,7 +195,7 @@ export function ViewToggles() {
       >
         <span className="relative flex h-full w-full items-center justify-center pb-1">
           <img
-            alt="2D floor plan"
+            alt="2D平面图"
             className={cn(
               'h-[28px] w-[28px] object-contain transition-[filter,opacity] duration-200',
               isFloorplanOpen ? 'opacity-100 grayscale-0' : 'opacity-60 grayscale',

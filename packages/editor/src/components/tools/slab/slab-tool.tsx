@@ -52,7 +52,7 @@ const commitSlabDrawing = (levelId: LevelNode['id'], points: Array<[number, numb
 
   // Count existing slabs for naming
   const slabCount = Object.values(nodes).filter((n) => n.type === 'slab').length
-  const name = `Slab ${slabCount + 1}`
+  const name = `楼板 ${slabCount + 1}`
 
   const slab = SlabNode.parse({
     name,

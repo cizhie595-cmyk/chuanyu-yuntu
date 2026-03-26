@@ -53,7 +53,7 @@ const commitZoneDrawing = (levelId: LevelNode['id'], points: Array<[number, numb
 
   // Count existing zones for naming and color cycling
   const zoneCount = Object.values(nodes).filter((n) => n.type === 'zone').length
-  const name = `Zone ${zoneCount + 1}`
+  const name = `区域 ${zoneCount + 1}`
 
   // Cycle through colors
   const color = PALETTE_COLORS[zoneCount % PALETTE_COLORS.length]

@@ -88,7 +88,7 @@ const commitRoofPlacement = (
 
   // Count existing roofs for naming
   const roofCount = Object.values(nodes).filter((n) => n.type === 'roof').length
-  const name = `Roof ${roofCount + 1}`
+  const name = `屋顶 ${roofCount + 1}`
 
   // Create the segment first (centered in its new parent)
   const segment = RoofSegmentNode.parse({
