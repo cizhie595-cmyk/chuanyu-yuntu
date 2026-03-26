@@ -15,6 +15,37 @@ import { CATALOG_ITEMS } from './catalog-items'
 
 const PLACEMENT_TAGS = new Set(['floor', 'wall', 'ceiling', 'countertop'])
 
+// 标签中文映射
+const TAG_LABELS: Record<string, string> = {
+  floor: '地面',
+  wall: '墙面',
+  ceiling: '天花板',
+  countertop: '台面',
+  decor: '装饰',
+  storage: '收纳',
+  electronics: '电子',
+  large: '大件',
+  seating: '座椅',
+  table: '桌子',
+  bedroom: '卧室',
+  lighting: '照明',
+  leisure: '休闲',
+  vegetation: '绿植',
+  fencing: '围栏',
+  structure: '结构',
+  safety: '安全',
+  climate: '温控',
+  electrical: '电气',
+  kids: '儿童',
+  sports: '运动',
+  fitness: '健身',
+  garage: '车库',
+}
+
+function getTagLabel(tag: string): string {
+  return TAG_LABELS[tag] ?? tag
+}
+
 export function ItemCatalog({ category }: { category: CatalogCategory }) {
   const selectedItem = useEditor((state) => state.selectedItem)
   const setSelectedItem = useEditor((state) => state.setSelectedItem)
@@ -91,7 +122,7 @@ export function ItemCatalog({ category }: { category: CatalogCategory }) {
                 onClick={() => setActivePlacementTag(null)}
                 type="button"
               >
-                All
+                全部
               </button>
               {placementTags.map((tag) => {
                 const count = placementCount(tag)
@@ -112,7 +143,7 @@ export function ItemCatalog({ category }: { category: CatalogCategory }) {
                     onClick={() => setActivePlacementTag(isActive ? null : tag)}
                     type="button"
                   >
-                    {tag}
+                    {getTagLabel(tag)}
                     <span
                       className={cn(
                         'text-[10px]',
@@ -149,7 +180,7 @@ export function ItemCatalog({ category }: { category: CatalogCategory }) {
                     onClick={() => setActiveFunctionalTag(isActive ? null : tag)}
                     type="button"
                   >
-                    {tag}
+                    {getTagLabel(tag)}
                     <span
                       className={cn(
                         'text-[10px]',
