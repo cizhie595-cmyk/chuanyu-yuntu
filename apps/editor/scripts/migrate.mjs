@@ -99,7 +99,26 @@ CREATE INDEX IF NOT EXISTS idx_lead_orders_lead_id ON lead_orders(lead_id);
 CREATE INDEX IF NOT EXISTS idx_lead_orders_contractor_id ON lead_orders(contractor_id);
 CREATE INDEX IF NOT EXISTS idx_lead_orders_status ON lead_orders(status);
 
--- ── 5. 自动更新 updated_at 触发器 ────────────────────────────────────────────
+-- ── 5. 事件埋点表 ──────────────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS analytics_events (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  event_name VARCHAR(64) NOT NULL,
+  properties JSONB DEFAULT '{}',
+  user_id UUID REFERENCES users(id) ON DELETE SET NULL,
+  client_timestamp TIMESTAMPTZ,
+  user_agent TEXT DEFAULT '',
+  ip VARCHAR(45) DEFAULT '',
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_analytics_event_name ON analytics_events(event_name);
+CREATE INDEX IF NOT EXISTS idx_analytics_user_id ON analytics_events(user_id);
+CREATE INDEX IF NOT EXISTS idx_analytics_created_at ON analytics_events(created_at);
+
+-- 添加 users 表的 nickname 字段（微信登录使用）
+ALTER TABLE users ADD COLUMN IF NOT EXISTS nickname VARCHAR(64);
+
+-- ── 6. 自动更新 updated_at 触发器 ────────────────────────────────────────────
 CREATE OR REPLACE FUNCTION update_updated_at_column()
 RETURNS TRIGGER AS $$
 BEGIN
