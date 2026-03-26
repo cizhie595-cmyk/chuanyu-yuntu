@@ -8,16 +8,16 @@ import useEditor from '../../../store/use-editor'
 import { ActionButton } from './action-button'
 
 const levelModeLabels: Record<'stacked' | 'exploded' | 'solo', string> = {
-  stacked: 'Stacked',
-  exploded: 'Exploded',
-  solo: 'Solo',
+  stacked: '堆叠',
+  exploded: '展开',
+  solo: '独立',
 }
 
 const levelModeBadgeLabels: Record<'manual' | 'stacked' | 'exploded' | 'solo', string> = {
-  manual: 'Stack',
-  stacked: 'Stack',
-  exploded: 'Exploded',
-  solo: 'Solo',
+  manual: '堆叠',
+  stacked: '堆叠',
+  exploded: '展开',
+  solo: '独立',
 }
 
 const levelModeOrder: ('stacked' | 'exploded' | 'solo')[] = ['stacked', 'exploded', 'solo']
@@ -32,17 +32,17 @@ const wallModeConfig: Record<
     icon: (props) => (
       <img alt="Full Height" height={20} src="/icons/room.png" width={20} {...props} />
     ),
-    label: 'Full Height',
+    label: '全高',
   },
   cutaway: {
     icon: (props) => (
       <img alt="Cutaway" height={20} src="/icons/wallcut.png" width={20} {...props} />
     ),
-    label: 'Cutaway',
+    label: '剖切',
   },
   down: {
     icon: (props) => <img alt="Low" height={20} src="/icons/walllow.png" width={20} {...props} />,
-    label: 'Low',
+    label: '低墙',
   },
 }
 
@@ -93,7 +93,7 @@ export function ViewToggles() {
             ? 'bg-violet-500/20 text-violet-400'
             : 'hover:text-violet-400',
         )}
-        label={`Camera: ${cameraMode === 'perspective' ? 'Perspective' : 'Orthographic'}`}
+        label={`相机: ${cameraMode === 'perspective' ? '透视' : '正交'}`}
         onClick={toggleCameraMode}
         size="icon"
         variant="ghost"
@@ -113,7 +113,7 @@ export function ViewToggles() {
             ? 'text-muted-foreground/80 hover:bg-white/5 hover:text-foreground'
             : 'bg-white/10 text-foreground',
         )}
-        label={`Levels: ${levelMode === 'manual' ? 'Manual' : levelModeLabels[levelMode as keyof typeof levelModeLabels]}`}
+        label={`楼层: ${levelMode === 'manual' ? '手动' : levelModeLabels[levelMode as keyof typeof levelModeLabels]}`}
         onClick={cycleLevelMode}
         size="icon"
         variant="ghost"
@@ -143,7 +143,7 @@ export function ViewToggles() {
             ? 'bg-white/10'
             : 'opacity-60 grayscale hover:bg-white/5 hover:opacity-100 hover:grayscale-0',
         )}
-        label={`Walls: ${wallModeConfig[wallMode].label}`}
+        label={`墙体: ${wallModeConfig[wallMode].label}`}
         onClick={cycleWallMode}
         size="icon"
         variant="ghost"
@@ -162,7 +162,7 @@ export function ViewToggles() {
             ? 'bg-white/10'
             : 'opacity-60 grayscale hover:bg-white/5 hover:opacity-100 hover:grayscale-0',
         )}
-        label={`Scans: ${showScans ? 'Visible' : 'Hidden'}`}
+        label={`扫描: ${showScans ? '显示' : '隐藏'}`}
         onClick={() => setShowScans(!showScans)}
         size="icon"
         variant="ghost"
@@ -178,7 +178,7 @@ export function ViewToggles() {
             ? 'bg-white/10'
             : 'opacity-60 grayscale hover:bg-white/5 hover:opacity-100 hover:grayscale-0',
         )}
-        label={`Guides: ${showGuides ? 'Visible' : 'Hidden'}`}
+        label={`参考图: ${showGuides ? '显示' : '隐藏'}`}
         onClick={() => setShowGuides(!showGuides)}
         size="icon"
         variant="ghost"
@@ -188,7 +188,7 @@ export function ViewToggles() {
 
       <ActionButton
         className={cn('overflow-visible p-0', isFloorplanOpen ? 'bg-white/10' : 'hover:bg-white/5')}
-        label={`2D floor plan: ${isFloorplanOpen ? 'Visible' : 'Hidden'}`}
+        label={`2D平面图: ${isFloorplanOpen ? '显示' : '隐藏'}`}
         onClick={toggleFloorplanOpen}
         size="icon"
         variant="ghost"
@@ -206,7 +206,7 @@ export function ViewToggles() {
             aria-hidden="true"
             className="pointer-events-none absolute -top-1 -right-1 z-10 rounded-full border border-background/80 bg-emerald-600 px-1.5 py-0.5 font-semibold text-[7px] text-white leading-none shadow-[0_4px_10px_rgba(5,150,105,0.24)]"
           >
-            New
+            新
           </span>
           <span
             aria-hidden="true"

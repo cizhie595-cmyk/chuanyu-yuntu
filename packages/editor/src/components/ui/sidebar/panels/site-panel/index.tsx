@@ -246,7 +246,7 @@ function CameraPopover({
             buttonClassName,
           )}
           onClick={(e) => e.stopPropagation()}
-          title="Camera snapshot"
+          title="相机快照"
         >
           <Camera className="h-3.5 w-3.5" />
           {hasCamera && (
@@ -271,7 +271,7 @@ function CameraPopover({
               }}
             >
               <Camera className="h-3.5 w-3.5" />
-              View snapshot
+              查看快照
             </button>
           )}
           <button
@@ -283,7 +283,7 @@ function CameraPopover({
             }}
           >
             <Camera className="h-3.5 w-3.5" />
-            {hasCamera ? 'Update snapshot' : 'Take snapshot'}
+            {hasCamera ? '更新快照' : '拍摄快照'}
           </button>
           {hasCamera && (
             <button
@@ -295,7 +295,7 @@ function CameraPopover({
               }}
             >
               <Trash2 className="h-3.5 w-3.5" />
-              Clear snapshot
+              清除快照
             </button>
           )}
         </div>
@@ -357,7 +357,7 @@ function ReferenceItem({
           />
         )}
         <InlineRenameInput
-          defaultName={refNode.type === 'scan' ? '3D Scan' : 'Guide Image'}
+          defaultName={refNode.type === 'scan' ? '3D扫描' : '参考图'}
           isEditing={isEditing}
           node={refNode}
           onStartEditing={() => setIsEditing(true)}
@@ -368,7 +368,7 @@ function ReferenceItem({
       <button
         className="z-20 flex h-5 w-5 shrink-0 cursor-pointer items-center justify-center rounded-md text-muted-foreground opacity-0 transition-colors hover:bg-black/5 hover:text-foreground group-hover/ref:opacity-100 dark:hover:bg-white/10"
         onClick={(e) => handleDelete(refNode.id, e)}
-        title="Delete"
+        title="删除"
       >
         <Trash2 className="h-3 w-3" />
       </button>
@@ -421,7 +421,7 @@ function LevelReferences({
 
     if (!projectId) {
       useUploadStore.getState().startUpload(levelId, 'scan', file.name)
-      useUploadStore.getState().setError(levelId, 'No active project. Please open a project first.')
+      useUploadStore.getState().setError(levelId, '无活动项目。请先打开一个项目。')
       return
     }
 
@@ -445,7 +445,7 @@ function LevelReferences({
       useUploadStore.getState().startUpload(levelId, 'scan', file.name)
       useUploadStore
         .getState()
-        .setError(levelId, 'Invalid file type. Please upload a .glb/.gltf scan or an image.')
+        .setError(levelId, '无效文件类型。请上传 .glb/.gltf 扫描文件或图片。')
       return
     }
 
@@ -511,7 +511,7 @@ function LevelReferences({
                 ) : (
                   <Plus className="h-3.5 w-3.5" />
                 )}
-                {uploading ? `Uploading ${uploadingType}... ${progress}%` : 'Upload scan/floorplan'}
+                {uploading ? `上传${uploadingType}中... ${progress}%` : '上传扫描/平面图'}
               </button>
 
               <input
@@ -675,7 +675,7 @@ function LevelItem({
                   : 'text-muted-foreground hover:bg-accent hover:text-foreground',
               )}
               onClick={(e) => e.stopPropagation()}
-              title="Camera snapshot"
+              title="相机快照"
             >
               <Camera className="h-3.5 w-3.5" />
               {level.camera && (
@@ -700,7 +700,7 @@ function LevelItem({
                   }}
                 >
                   <Camera className="h-3.5 w-3.5" />
-                  View snapshot
+                  查看快照
                 </button>
               )}
               <button
@@ -712,7 +712,7 @@ function LevelItem({
                 }}
               >
                 <Camera className="h-3.5 w-3.5" />
-                {level.camera ? 'Update snapshot' : 'Take snapshot'}
+                {level.camera ? '更新快照' : '拍摄快照'}
               </button>
               {level.camera && (
                 <button
@@ -724,7 +724,7 @@ function LevelItem({
                   }}
                 >
                   <Trash2 className="h-3.5 w-3.5" />
-                  Clear snapshot
+                  清除快照
                 </button>
               )}
             </div>
@@ -749,10 +749,10 @@ function LevelItem({
               className="flex w-full items-center gap-2 rounded px-3 py-1.5 text-left text-sm transition-colors enabled:cursor-pointer enabled:hover:bg-accent enabled:hover:text-red-600 disabled:cursor-not-allowed disabled:opacity-50"
               disabled={!canDeleteLevel}
               onClick={() => deleteLevelWithFallbackSelection(level.id)}
-              title={canDeleteLevel ? 'Delete level' : 'The ground level cannot be deleted'}
+              title={canDeleteLevel ? '删除楼层' : '地面层不可删除'}
             >
               <Trash2 className="h-3.5 w-3.5" />
-              Delete
+              删除
             </button>
           </PopoverContent>
         </Popover>
@@ -830,7 +830,7 @@ function LevelsSection({
           <div className="relative z-10 flex items-center pr-1 pl-[38px]">
             <Plus className="h-3.5 w-3.5" />
           </div>
-          <span className="truncate">Add level</span>
+          <span className="truncate">添加楼层</span>
         </button>
         {levels.length === 0 && (
           <div className="relative flex h-8 select-none items-center border-border/50 border-b py-0 pr-2 pl-[38px] text-muted-foreground text-xs">
@@ -838,7 +838,7 @@ function LevelsSection({
             <div className="pointer-events-none absolute top-0 bottom-1/2 left-[21px] w-px bg-border/50" />
             {/* Horizontal branch line */}
             <div className="pointer-events-none absolute top-1/2 left-[21px] h-px w-[11px] bg-border/50" />
-            No levels yet
+            暂无楼层
           </div>
         )}
         {[...levels].reverse().map((level, index) => (
@@ -904,7 +904,7 @@ function LayerToggle() {
             )}
             src="/icons/room.png"
           />
-          Structure
+          结构
         </div>
         <div className="absolute right-1.5 bottom-1 z-10 rounded border border-border/40 bg-background/40 px-1 py-[2px] backdrop-blur-md">
           <span className="block font-medium font-mono text-[9px] text-muted-foreground/70 leading-none">
@@ -940,7 +940,7 @@ function LayerToggle() {
             )}
             src="/icons/couch.png"
           />
-          Furnish
+          家具
         </div>
         <div className="absolute right-1.5 bottom-1 z-10 rounded border border-border/40 bg-background/40 px-1 py-[2px] backdrop-blur-md">
           <span className="block font-medium font-mono text-[9px] text-muted-foreground/70 leading-none">
@@ -977,7 +977,7 @@ function LayerToggle() {
             )}
             src="/icons/kitchen.png"
           />
-          Zones
+          区域
         </div>
         <div className="absolute right-1.5 bottom-1 z-10 rounded border border-border/40 bg-background/40 px-1 py-[2px] backdrop-blur-md">
           <span className="block font-medium font-mono text-[9px] text-muted-foreground/70 leading-none">
@@ -1086,7 +1086,7 @@ function ZoneItem({ zone, isLast }: { zone: ZoneNode; isLast?: boolean }) {
             <button
               className="relative flex h-6 w-6 cursor-pointer items-center justify-center rounded-md text-muted-foreground opacity-0 transition-colors hover:bg-black/5 hover:text-foreground group-hover/row:opacity-100 dark:hover:bg-white/10"
               onClick={(e) => e.stopPropagation()}
-              title="Camera snapshot"
+              title="相机快照"
             >
               <Camera className="h-3 w-3" />
               {zone.camera && (
@@ -1111,7 +1111,7 @@ function ZoneItem({ zone, isLast }: { zone: ZoneNode; isLast?: boolean }) {
                   }}
                 >
                   <Camera className="h-3.5 w-3.5" />
-                  View snapshot
+                  查看快照
                 </button>
               )}
               <button
@@ -1123,7 +1123,7 @@ function ZoneItem({ zone, isLast }: { zone: ZoneNode; isLast?: boolean }) {
                 }}
               >
                 <Camera className="h-3.5 w-3.5" />
-                {zone.camera ? 'Update snapshot' : 'Take snapshot'}
+                {zone.camera ? '更新快照' : '拍摄快照'}
               </button>
               {zone.camera && (
                 <button
@@ -1135,7 +1135,7 @@ function ZoneItem({ zone, isLast }: { zone: ZoneNode; isLast?: boolean }) {
                   }}
                 >
                   <Trash2 className="h-3.5 w-3.5" />
-                  Clear snapshot
+                  清除快照
                 </button>
               )}
             </div>
@@ -1161,11 +1161,11 @@ function MultiSelectionBadge() {
   return (
     <div className="pointer-events-none sticky top-4 z-50 flex h-0 w-full justify-center overflow-visible">
       <div className="pointer-events-auto flex items-center gap-2.5 rounded-full border border-primary/20 bg-primary px-0.5 py-4 pl-2 font-medium text-primary-foreground text-xs shadow-black/10 shadow-lg backdrop-blur-md">
-        <span>{selectedIds.length} objects selected</span>
+        <span>已选择 {selectedIds.length} 个对象</span>
         <button
           className="cursor-pointer rounded-full p-1.5 transition-colors hover:bg-primary-foreground/20"
           onClick={() => setSelection({ selectedIds: [] })}
-          title="Clear selection"
+          title="清除选择"
         >
           <X className="h-4 w-4" />
         </button>
@@ -1187,7 +1187,7 @@ function ContentSection() {
 
   if (!level) {
     return (
-      <div className="px-3 py-4 text-muted-foreground text-sm">Select a level to view content</div>
+      <div className="px-3 py-4 text-muted-foreground text-sm">请选择一个楼层查看内容</div>
     )
   }
 
@@ -1206,9 +1206,9 @@ function ContentSection() {
     if (levelZones.length === 0) {
       return (
         <div className="px-3 py-4 text-muted-foreground text-sm">
-          No zones on this level.{' '}
+          此楼层暂无区域。{' '}
           <button className="cursor-pointer text-primary hover:underline" onClick={handleAddZone}>
-            Add one
+            添加一个
           </button>
         </div>
       )
@@ -1235,7 +1235,7 @@ function ContentSection() {
   })
 
   if (elementChildren.length === 0) {
-    return <div className="px-3 py-4 text-muted-foreground text-sm">No elements on this level</div>
+    return <div className="px-3 py-4 text-muted-foreground text-sm">此楼层暂无元素</div>
   }
 
   return (
@@ -1321,7 +1321,7 @@ function BuildingItem({
             )}
             src="/icons/building.png"
           />
-          <span className="truncate font-medium text-sm">{building.name || 'Building'}</span>
+          <span className="truncate font-medium text-sm">{building.name || '建筑'}</span>
         </div>
         <Popover
           onOpenChange={(open) => setBuildingCameraOpen(open ? building.id : null)}
@@ -1336,7 +1336,7 @@ function BuildingItem({
                   : 'text-muted-foreground hover:bg-accent hover:text-foreground',
               )}
               onClick={(e) => e.stopPropagation()}
-              title="Camera snapshot"
+              title="相机快照"
             >
               <Camera className="h-4 w-4" />
               {building.camera && (
@@ -1361,7 +1361,7 @@ function BuildingItem({
                   }}
                 >
                   <Camera className="h-3.5 w-3.5" />
-                  View snapshot
+                  查看快照
                 </button>
               )}
               <button
@@ -1373,7 +1373,7 @@ function BuildingItem({
                 }}
               >
                 <Camera className="h-3.5 w-3.5" />
-                {building.camera ? 'Update snapshot' : 'Take snapshot'}
+                {building.camera ? '更新快照' : '拍摄快照'}
               </button>
               {building.camera && (
                 <button
@@ -1385,7 +1385,7 @@ function BuildingItem({
                   }}
                 >
                   <Trash2 className="h-3.5 w-3.5" />
-                  Clear snapshot
+                  清除快照
                 </button>
               )}
             </div>
@@ -1474,7 +1474,7 @@ export function SitePanel({ projectId, onUploadAsset, onDeleteAsset }: SitePanel
                 )}
                 src="/icons/site.png"
               />
-              <span className="font-medium text-sm">{siteNode.name || 'Site'}</span>
+              <span className="font-medium text-sm">{siteNode.name || '场地'}</span>
             </div>
             <CameraPopover
               buttonClassName={cn(
@@ -1512,7 +1512,7 @@ export function SitePanel({ projectId, onUploadAsset, onDeleteAsset }: SitePanel
           {/* Buildings List */}
           {buildings.length === 0 ? (
             <motion.div className="px-3 py-4 text-muted-foreground text-sm" layout="position">
-              No buildings yet
+              暂无建筑
             </motion.div>
           ) : (
             <motion.div className="flex min-h-0 flex-1 flex-col" layout>

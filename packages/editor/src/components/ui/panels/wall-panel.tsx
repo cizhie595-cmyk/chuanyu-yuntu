@@ -42,12 +42,12 @@ export function WallPanel() {
     <PanelWrapper
       icon="/icons/wall.png"
       onClose={handleClose}
-      title={node.name || 'Wall'}
+      title={node.name || '墙体'}
       width={280}
     >
-      <PanelSection title="Dimensions">
+      <PanelSection title="尺寸">
         <SliderControl
-          label="Height"
+          label="高度"
           max={6}
           min={0.1}
           onChange={(v) => handleUpdate({ height: Math.max(0.1, v) })}
@@ -57,7 +57,7 @@ export function WallPanel() {
           value={Math.round(height * 100) / 100}
         />
         <SliderControl
-          label="Thickness"
+          label="厚度"
           max={1}
           min={0.05}
           onChange={(v) => handleUpdate({ thickness: Math.max(0.05, v) })}
@@ -68,9 +68,9 @@ export function WallPanel() {
         />
       </PanelSection>
 
-      <PanelSection title="Info">
+      <PanelSection title="信息">
         <div className="flex items-center justify-between px-2 py-1 text-muted-foreground text-sm">
-          <span>Length</span>
+          <span>长度</span>
           <span className="font-mono text-white">{length.toFixed(2)} m</span>
         </div>
       </PanelSection>

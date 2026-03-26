@@ -269,12 +269,12 @@ export function SettingsPanel({
       {/* Visibility Section (only for cloud projects) */}
       {projectId && !isLocalProject && (
         <div className="space-y-3">
-          <label className="font-medium text-muted-foreground text-xs uppercase">Visibility</label>
+          <label className="font-medium text-muted-foreground text-xs uppercase">可见性</label>
           <div className="flex items-center justify-between">
             <div>
-              <div className="font-medium text-sm">Public</div>
+              <div className="font-medium text-sm">公开</div>
               <div className="text-muted-foreground text-xs">
-                {projectVisibility?.isPrivate ? 'Only you' : 'Anyone'} can view
+                {projectVisibility?.isPrivate ? '仅自己' : '任何人'}可查看
               </div>
             </div>
             <Switch
@@ -284,8 +284,8 @@ export function SettingsPanel({
           </div>
           <div className="flex items-center justify-between">
             <div>
-              <div className="font-medium text-sm">Show 3D Scans</div>
-              <div className="text-muted-foreground text-xs">Visible to public viewers</div>
+              <div className="font-medium text-sm">显示3D扫描</div>
+              <div className="text-muted-foreground text-xs">对公开访客可见</div>
             </div>
             <Switch
               checked={projectVisibility?.showScansPublic ?? true}
@@ -294,8 +294,8 @@ export function SettingsPanel({
           </div>
           <div className="flex items-center justify-between">
             <div>
-              <div className="font-medium text-sm">Show Floorplans</div>
-              <div className="text-muted-foreground text-xs">Visible to public viewers</div>
+              <div className="font-medium text-sm">显示平面图</div>
+              <div className="text-muted-foreground text-xs">对公开访客可见</div>
             </div>
             <Switch
               checked={projectVisibility?.showGuidesPublic ?? true}
@@ -304,8 +304,8 @@ export function SettingsPanel({
           </div>
           <div className="flex items-center justify-between">
             <div>
-              <div className="font-medium text-sm">Show Grid</div>
-              <div className="text-muted-foreground text-xs">Visible only in the editor</div>
+              <div className="font-medium text-sm">显示网格</div>
+              <div className="text-muted-foreground text-xs">仅在编辑器中可见</div>
             </div>
             <Switch
               checked={showGrid}
@@ -317,25 +317,25 @@ export function SettingsPanel({
 
       {/* Export Section */}
       <div className="space-y-2">
-        <label className="font-medium text-muted-foreground text-xs uppercase">Export</label>
+        <label className="font-medium text-muted-foreground text-xs uppercase">导出</label>
         <Button className="w-full justify-start gap-2" onClick={() => handleExport('glb')} variant="outline">
           <Download className="size-4" />
-          Export as GLB
+          导出为 GLB
         </Button>
         <Button className="w-full justify-start gap-2" onClick={() => handleExport('stl')} variant="outline">
           <Download className="size-4" />
-          Export as STL
+          导出为 STL
         </Button>
         <Button className="w-full justify-start gap-2" onClick={() => handleExport('obj')} variant="outline">
           <Download className="size-4" />
-          Export as OBJ
+          导出为 OBJ
         </Button>
       </div>
 
       {/* Thumbnail Section (only for cloud projects) */}
       {projectId && !isLocalProject && (
         <div className="space-y-2">
-          <label className="font-medium text-muted-foreground text-xs uppercase">Thumbnail</label>
+          <label className="font-medium text-muted-foreground text-xs uppercase">缩略图</label>
           <Button
             className="w-full justify-start gap-2"
             disabled={isGeneratingThumbnail}
@@ -343,18 +343,18 @@ export function SettingsPanel({
             variant="outline"
           >
             <Camera className="size-4" />
-            {isGeneratingThumbnail ? 'Generating...' : 'Generate Thumbnail'}
+            {isGeneratingThumbnail ? '生成中...' : '生成缩略图'}
           </Button>
         </div>
       )}
 
       {/* Save/Load Section */}
       <div className="space-y-2">
-        <label className="font-medium text-muted-foreground text-xs uppercase">Save & Load</label>
+        <label className="font-medium text-muted-foreground text-xs uppercase">保存与加载</label>
 
         <Button className="w-full justify-start gap-2" onClick={handleSaveBuild} variant="outline">
           <Save className="size-4" />
-          Save Build
+          保存方案
         </Button>
 
         <Button
@@ -363,7 +363,7 @@ export function SettingsPanel({
           variant="outline"
         >
           <Upload className="size-4" />
-          Load Build
+          加载方案
         </Button>
 
         <input
@@ -377,27 +377,27 @@ export function SettingsPanel({
 
       {/* Audio Section */}
       <div className="space-y-2">
-        <label className="font-medium text-muted-foreground text-xs uppercase">Audio</label>
+        <label className="font-medium text-muted-foreground text-xs uppercase">音频</label>
         <AudioSettingsDialog />
       </div>
 
       {/* Keyboard Section */}
       <div className="space-y-2">
-        <label className="font-medium text-muted-foreground text-xs uppercase">Keyboard</label>
+        <label className="font-medium text-muted-foreground text-xs uppercase">键盘</label>
         <KeyboardShortcutsDialog />
       </div>
 
       {/* Scene Graph */}
       <div className="space-y-1">
-        <label className="font-medium text-muted-foreground text-xs uppercase">Scene Graph</label>
+        <label className="font-medium text-muted-foreground text-xs uppercase">场景图</label>
         <Dialog>
           <DialogTrigger asChild>
             <Button className="h-auto justify-start p-0 text-sm" variant="link">
-              Explore scene graph
+              查看场景图
             </Button>
           </DialogTrigger>
           <DialogContent className="h-[80vh] max-w-[95vw] gap-0 overflow-hidden border-0 bg-[#1e1e1e] p-0 shadow-none sm:max-w-5xl">
-            <DialogTitle className="sr-only">Scene Graph</DialogTitle>
+            <DialogTitle className="sr-only">场景图</DialogTitle>
             <div
               className="flex h-full min-h-0 w-full min-w-0 *:h-full *:w-full *:overflow-y-auto"
               onContextMenuCapture={blockSceneGraphMutations}
@@ -415,7 +415,7 @@ export function SettingsPanel({
 
       {/* Danger Zone */}
       <div className="space-y-2">
-        <label className="font-medium text-destructive text-xs uppercase">Danger Zone</label>
+        <label className="font-medium text-destructive text-xs uppercase">危险区域</label>
 
         <Button
           className="w-full justify-start gap-2"
@@ -423,7 +423,7 @@ export function SettingsPanel({
           variant="destructive"
         >
           <Trash2 className="size-4" />
-          Clear & Start New
+          清空并新建
         </Button>
       </div>
     </div>

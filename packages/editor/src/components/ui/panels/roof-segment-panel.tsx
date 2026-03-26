@@ -115,10 +115,10 @@ export function RoofSegmentPanel() {
       icon="/icons/roof.png"
       onBack={handleBack}
       onClose={handleClose}
-      title={node.name || 'Roof Segment'}
+      title={node.name || '屋顶分段'}
       width={300}
     >
-      <PanelSection title="Roof Type">
+      <PanelSection title="屋顶类型">
         <SegmentedControl
           onChange={(v) => handleUpdate({ roofType: v })}
           options={ROOF_TYPE_OPTIONS}
@@ -131,9 +131,9 @@ export function RoofSegmentPanel() {
         />
       </PanelSection>
 
-      <PanelSection title="Footprint">
+      <PanelSection title="占地">
         <SliderControl
-          label="Width"
+          label="宽度"
           max={25}
           min={0.5}
           onChange={(v) => handleUpdate({ width: v })}
@@ -143,7 +143,7 @@ export function RoofSegmentPanel() {
           value={Math.round(node.width * 100) / 100}
         />
         <SliderControl
-          label="Depth"
+          label="深度"
           max={25}
           min={0.5}
           onChange={(v) => handleUpdate({ depth: v })}
@@ -154,9 +154,9 @@ export function RoofSegmentPanel() {
         />
       </PanelSection>
 
-      <PanelSection title="Heights">
+      <PanelSection title="高度">
         <SliderControl
-          label="Wall"
+          label="墙体"
           max={5}
           min={0}
           onChange={(v) => handleUpdate({ wallHeight: v })}
@@ -166,7 +166,7 @@ export function RoofSegmentPanel() {
           value={Math.round(node.wallHeight * 100) / 100}
         />
         <SliderControl
-          label="Roof"
+          label="屋顶"
           max={15}
           min={0}
           onChange={(v) => handleUpdate({ roofHeight: v })}
@@ -177,9 +177,9 @@ export function RoofSegmentPanel() {
         />
       </PanelSection>
 
-      <PanelSection title="Structure">
+      <PanelSection title="结构">
         <SliderControl
-          label="Wall Thick."
+          label="墙厚"
           max={1}
           min={0.05}
           onChange={(v) => handleUpdate({ wallThickness: v })}
@@ -189,7 +189,7 @@ export function RoofSegmentPanel() {
           value={Math.round(node.wallThickness * 100) / 100}
         />
         <SliderControl
-          label="Deck Thick."
+          label="楼板厚"
           max={0.3}
           min={0.04}
           onChange={(v) => handleUpdate({ deckThickness: v })}
@@ -199,7 +199,7 @@ export function RoofSegmentPanel() {
           value={Math.round(node.deckThickness * 100) / 100}
         />
         <SliderControl
-          label="Overhang"
+          label="悬挥"
           max={1}
           min={0}
           onChange={(v) => handleUpdate({ overhang: v })}
@@ -209,7 +209,7 @@ export function RoofSegmentPanel() {
           value={Math.round(node.overhang * 100) / 100}
         />
         <SliderControl
-          label="Shingle Thick."
+          label="瓦片厚"
           max={0.3}
           min={0.02}
           onChange={(v) => handleUpdate({ shingleThickness: v })}
@@ -220,7 +220,7 @@ export function RoofSegmentPanel() {
         />
       </PanelSection>
 
-      <PanelSection title="Position">
+      <PanelSection title="位置">
         <MetricControl
           label="X"
           max={50}
@@ -264,7 +264,7 @@ export function RoofSegmentPanel() {
           value={Math.round(node.position[2] * 100) / 100}
         />
         <SliderControl
-          label="Rotation"
+          label="旋转"
           max={180}
           min={-180}
           onChange={(degrees) => {
@@ -293,18 +293,18 @@ export function RoofSegmentPanel() {
         </div>
       </PanelSection>
 
-      <PanelSection title="Actions">
+      <PanelSection title="操作">
         <ActionGroup>
-          <ActionButton icon={<Move className="h-3.5 w-3.5" />} label="Move" onClick={handleMove} />
+          <ActionButton icon={<Move className="h-3.5 w-3.5" />} label="移动" onClick={handleMove} />
           <ActionButton
             icon={<Copy className="h-3.5 w-3.5" />}
-            label="Duplicate"
+            label="复制"
             onClick={handleDuplicate}
           />
           <ActionButton
             className="hover:bg-red-500/20"
             icon={<Trash2 className="h-3.5 w-3.5 text-red-400" />}
-            label="Delete"
+            label="删除"
             onClick={handleDelete}
           />
         </ActionGroup>

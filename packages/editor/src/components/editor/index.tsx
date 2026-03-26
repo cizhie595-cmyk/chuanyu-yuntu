@@ -88,9 +88,9 @@ function EditorSceneCrashFallback() {
   return (
     <div className="fixed inset-0 z-80 flex items-center justify-center bg-background/95 p-4 text-foreground">
       <div className="w-full max-w-md rounded-2xl border border-border/60 bg-background p-6 shadow-xl">
-        <h2 className="font-semibold text-lg">The editor scene failed to render</h2>
+        <h2 className="font-semibold text-lg">编辑器场景渲染失败</h2>
         <p className="mt-2 text-muted-foreground text-sm">
-          You can retry the scene or return home without reloading the whole app shell.
+          您可以重试场景或返回首页，无需重新加载整个应用。
         </p>
         <div className="mt-4 flex items-center gap-2">
           <button
@@ -98,13 +98,13 @@ function EditorSceneCrashFallback() {
             onClick={() => window.location.reload()}
             type="button"
           >
-            Reload editor
+            重新加载编辑器
           </button>
           <a
             className="rounded-md border border-border bg-background px-3 py-2 font-medium text-sm hover:bg-accent/40"
             href="/"
           >
-            Back to home
+            返回首页
           </a>
         </div>
       </div>
@@ -138,39 +138,39 @@ type CameraControlHint = {
 
 const EDITOR_CAMERA_CONTROL_HINTS: CameraControlHint[] = [
   {
-    action: 'Pan',
+    action: '平移',
     keys: [{ value: 'Space' }, { value: 'Left click' }],
   },
-  { action: 'Rotate', keys: [{ value: 'Right click' }] },
-  { action: 'Zoom', keys: [{ value: 'Scroll' }] },
+  { action: '旋转', keys: [{ value: 'Right click' }] },
+  { action: '缩放', keys: [{ value: 'Scroll' }] },
 ]
 
 const PREVIEW_CAMERA_CONTROL_HINTS: CameraControlHint[] = [
-  { action: 'Pan', keys: [{ value: 'Left click' }] },
-  { action: 'Rotate', keys: [{ value: 'Right click' }] },
-  { action: 'Zoom', keys: [{ value: 'Scroll' }] },
+  { action: '平移', keys: [{ value: 'Left click' }] },
+  { action: '旋转', keys: [{ value: 'Right click' }] },
+  { action: '缩放', keys: [{ value: 'Scroll' }] },
 ]
 
 const CAMERA_SHORTCUT_KEY_META: Record<string, { icon?: string; label: string; text?: string }> = {
   'Left click': {
     icon: 'ph:mouse-left-click-fill',
-    label: 'Left click',
+    label: '左键点击',
   },
   'Middle click': {
     icon: 'qlementine-icons:mouse-middle-button-16',
-    label: 'Middle click',
+    label: '中键点击',
   },
   'Right click': {
     icon: 'ph:mouse-right-click-fill',
-    label: 'Right click',
+    label: '右键点击',
   },
   Scroll: {
     icon: 'qlementine-icons:mouse-middle-button-16',
-    label: 'Scroll wheel',
+    label: '滚轮',
   },
   Space: {
     icon: 'lucide:space',
-    label: 'Space',
+    label: '空格键',
   },
 }
 

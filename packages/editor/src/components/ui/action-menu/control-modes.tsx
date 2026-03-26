@@ -21,7 +21,7 @@ const allModes: ModeConfig[] = [
   {
     id: 'select',
     imageSrc: '/icons/select.png',
-    label: 'Select',
+    label: '选择',
     shortcut: 'V',
     color: 'hover:bg-blue-500/20 hover:text-blue-400',
     activeColor: 'bg-blue-500/20 text-blue-400',
@@ -29,7 +29,7 @@ const allModes: ModeConfig[] = [
   {
     id: 'edit',
     icon: Pencil,
-    label: 'Edit',
+    label: '编辑',
     shortcut: 'E',
     color: 'hover:bg-orange-500/20 hover:text-orange-400',
     activeColor: 'bg-orange-500/20 text-orange-400',
@@ -37,7 +37,7 @@ const allModes: ModeConfig[] = [
   {
     id: 'build',
     imageSrc: '/icons/build.png',
-    label: 'Build',
+    label: '建造',
     shortcut: 'B',
     color: 'hover:bg-green-500/20 hover:text-green-400',
     activeColor: 'bg-green-500/20 text-green-400',
@@ -45,7 +45,7 @@ const allModes: ModeConfig[] = [
   {
     id: 'delete',
     icon: Trash2,
-    label: 'Delete',
+    label: '删除',
     shortcut: 'D',
     color: 'hover:bg-red-500/20 hover:text-red-400',
     activeColor: 'bg-red-500/20 text-red-400',
@@ -53,7 +53,7 @@ const allModes: ModeConfig[] = [
   // {
   //   id: 'painting',
   //   icon: Paintbrush,
-  //   label: 'Painting',
+  //   label: '绘制',
   //   shortcut: 'P',
   //   color: 'hover:bg-cyan-500/20 hover:text-cyan-400',
   //   activeColor: 'bg-cyan-500/20 text-cyan-400',
@@ -61,7 +61,7 @@ const allModes: ModeConfig[] = [
   // {
   //   id: 'guide',
   //   icon: Image,
-  //   label: 'Guide',
+  //   label: '参考',
   //   shortcut: 'G',
   //   color: 'hover:bg-purple-500/20 hover:text-purple-400',
   //   activeColor: 'bg-purple-500/20 text-purple-400',

@@ -190,11 +190,11 @@ const FLOORPLAN_QUICK_BUILD_TOOL_IDS = ['wall', 'door', 'window', 'slab', 'zone'
 type FloorplanQuickBuildTool = (typeof FLOORPLAN_QUICK_BUILD_TOOL_IDS)[number]
 
 const FLOORPLAN_QUICK_BUILD_TOOL_LABELS: Record<FloorplanQuickBuildTool, string> = {
-  wall: 'Wall',
-  door: 'Door',
-  window: 'Window',
-  slab: 'Floor',
-  zone: 'Zone',
+  wall: '墙体',
+  door: '门',
+  window: '窗户',
+  slab: '楼板',
+  zone: '区域',
 }
 
 const FLOORPLAN_QUICK_BUILD_TOOL_FALLBACK_ICONS: Record<FloorplanQuickBuildTool, string> = {
@@ -1215,7 +1215,7 @@ function buildDraftWall(levelId: string, start: WallPlanPoint, end: WallPlanPoin
     object: 'node',
     id: 'wall_draft' as WallNode['id'],
     type: 'wall',
-    name: 'Draft wall',
+    name: '草稿墙',
     parentId: levelId,
     visible: true,
     metadata: {},
@@ -3359,7 +3359,7 @@ export function FloorplanPanel() {
   const hasGuideImages = levelGuides.length > 0
   const guideImagesDescription = hasGuideImages
     ? `${levelGuides.length} guide image${levelGuides.length === 1 ? '' : 's'} on this level`
-    : 'No guide images on this level'
+    : '此楼层暂无参考图'
 
   const handleGuideOpacityChange = useCallback(
     (guideId: GuideNode['id'], opacity: number) => {
@@ -6939,7 +6939,7 @@ export function FloorplanPanel() {
               <TooltipTrigger asChild>
                 <span className="flex">
                   <button
-                    aria-label={isSiteEditShortcutActive ? 'Exit site editing' : 'Edit site'}
+                    aria-label={isSiteEditShortcutActive ? '退出场地编辑' : '编辑场地'}
                     aria-pressed={isSiteEditShortcutActive}
                     className={cn(
                       'flex h-8 w-8 items-center justify-center rounded-lg transition-[background-color,filter,opacity,transform] duration-200 active:scale-[0.96]',
@@ -6965,9 +6965,9 @@ export function FloorplanPanel() {
               <TooltipContent side="bottom" sideOffset={8}>
                 {canUseSiteEditShortcut
                   ? isSiteEditShortcutActive
-                    ? 'Exit site editing'
-                    : 'Edit site'
-                  : 'Site editing is only available on ground level'}
+                    ? '退出场地编辑'
+                    : '编辑场地'
+                  : '场地编辑仅在地面层可用'}
               </TooltipContent>
             </Tooltip>
           </div>
@@ -6977,7 +6977,7 @@ export function FloorplanPanel() {
               <Tooltip>
                 <TooltipTrigger asChild>
                   <button
-                    aria-label={showGuides ? 'Hide guide images' : 'Show guide images'}
+                    aria-label={showGuides ? '隐藏参考图' : '显示参考图'}
                     aria-pressed={showGuides}
                     className={cn(
                       'flex h-8 w-8 items-center justify-center rounded-lg transition-[background-color,filter,opacity,transform] duration-200 active:scale-[0.96]',
@@ -6999,7 +6999,7 @@ export function FloorplanPanel() {
                   </button>
                 </TooltipTrigger>
                 <TooltipContent side="bottom" sideOffset={8}>
-                  {showGuides ? 'Hide guide images' : 'Show guide images'}
+                  {showGuides ? '隐藏参考图' : '显示参考图'}
                 </TooltipContent>
               </Tooltip>
 
@@ -7009,7 +7009,7 @@ export function FloorplanPanel() {
                 <button
                   aria-expanded={isGuideQuickAccessOpen}
                   aria-haspopup="dialog"
-                  aria-label="Adjust guide image opacity"
+                  aria-label="调整参考图透明度"
                   className={cn(
                     'flex h-8 w-7 items-center justify-center rounded-lg transition-[background-color,opacity,transform] duration-200 active:scale-[0.96]',
                     isGuideQuickAccessOpen
@@ -7073,7 +7073,7 @@ export function FloorplanPanel() {
                           </div>
 
                           <SliderControl
-                            label="Opacity"
+                            label="透明度"
                             max={100}
                             min={0}
                             onChange={(value) => handleGuideOpacityChange(guide.id, value)}
@@ -7139,7 +7139,7 @@ export function FloorplanPanel() {
             <Tooltip>
               <TooltipTrigger asChild>
                 <button
-                  aria-label="Click select"
+                  aria-label="点击选择"
                   aria-pressed={floorplanSelectionTool === 'click'}
                   className={cn(
                     'flex h-8 w-8 items-center justify-center rounded-lg transition-[background-color,transform] duration-200 active:scale-[0.96]',
@@ -7171,7 +7171,7 @@ export function FloorplanPanel() {
             <Tooltip>
               <TooltipTrigger asChild>
                 <button
-                  aria-label="Box select"
+                  aria-label="框选"
                   aria-pressed={floorplanSelectionTool === 'marquee'}
                   className={cn(
                     'flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground transition-[background-color,color,transform] duration-200 active:scale-[0.96]',
@@ -7194,7 +7194,7 @@ export function FloorplanPanel() {
           <Tooltip>
             <TooltipTrigger asChild>
               <button
-                aria-label="Close floorplan"
+                aria-label="关闭平面图"
                 className="flex h-8 w-8 items-center justify-center rounded-lg border border-border/45 bg-background/92 text-muted-foreground shadow-[0_1px_2px_rgba(15,23,42,0.08),inset_0_1px_0_rgba(255,255,255,0.04)] transition-[background-color,color,transform] duration-200 hover:bg-accent hover:text-foreground active:scale-[0.96]"
                 onClick={() => setFloorplanOpen(false)}
                 type="button"
