@@ -84,7 +84,9 @@ export async function sendSmsCode(phone: string): Promise<{ success: boolean; me
   // V1.0：模拟发送（控制台打印）
   // 正式版：对接阿里云短信 API
   // await aliyunSms.send({ phone, templateCode: 'SMS_xxxxx', params: { code } })
-  console.log(`[短信验证码] ${phone}: ${code}`)
+  if (process.env.NODE_ENV === 'development') {
+    console.log(`[短信验证码] ${phone}: ${code}`)
+  }
 
   return { success: true, message: '验证码已发送' }
 }

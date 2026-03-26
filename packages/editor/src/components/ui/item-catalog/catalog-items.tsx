@@ -1183,19 +1183,6 @@ export const CATALOG_ITEMS: AssetInput[] = [
     dimensions: [1.5, 2.5, 3.5],
   },
 
-  // {
-  //   id: "suspended-fireplace",
-  //   category: "furniture",
-  //   tags: ["ceiling", "decor"],
-  //   name: "Suspended Fireplace",
-  //   thumbnail: "/items/suspended-fireplace/thumbnail.webp",
-  //   src: "/items/suspended-fireplace/model.glb",
-  //   scale: [1, 1, 1],
-  //   offset: [0, 0.45, 0],
-  //   rotation: [0, 0, 0],
-  //   dimensions: [0.5, 0.5, 0.5],
-  //   attachTo: "ceiling",
-  // },
 
   {
     id: 'tv-stand',
@@ -1262,7 +1249,7 @@ export const CATALOG_ITEMS: AssetInput[] = [
         },
         {
           kind: 'slider',
-          label: 'Intensity',
+          label: '亮度',
           min: 0,
           max: 100,
           unit: '%',
@@ -1299,7 +1286,7 @@ export const CATALOG_ITEMS: AssetInput[] = [
         },
         {
           kind: 'slider',
-          label: 'Intensity',
+          label: '亮度',
           min: 0,
           max: 100,
           unit: '%',
@@ -1336,7 +1323,7 @@ export const CATALOG_ITEMS: AssetInput[] = [
         },
         {
           kind: 'slider',
-          label: 'Intensity',
+          label: '亮度',
           min: 0,
           max: 100,
           unit: '%',
