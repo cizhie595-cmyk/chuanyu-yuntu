@@ -2,7 +2,7 @@
 
 import { Viewer, useViewer } from '@pascal-app/viewer'
 import { useParams } from 'next/navigation'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { applySceneGraphToEditor, type SceneGraph } from '@pascal-app/editor'
 
 // ── 留资表单状态 ──────────────────────────────────────────────────────────
@@ -39,6 +39,41 @@ export default function SharePreviewPage() {
   })
   const [submitting, setSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
+  const enterTimeRef = useRef<number>(Date.now())
+
+  // ── H5 页面停留时长统计 ────────────────────────────────────────
+  useEffect(() => {
+    enterTimeRef.current = Date.now()
+
+    const sendDuration = () => {
+      const duration = Math.round((Date.now() - enterTimeRef.current) / 1000)
+      if (duration < 2) return // 忽略过短停留
+      const payload = JSON.stringify({
+        events: [{
+          event: 'h5_view_duration',
+          properties: { share_code: code, duration_seconds: duration },
+          timestamp: new Date().toISOString(),
+        }],
+      })
+      // 使用 sendBeacon 确保页面关闭时也能发送
+      if (navigator.sendBeacon) {
+        navigator.sendBeacon('/api/analytics', payload)
+      } else {
+        fetch('/api/analytics', { method: 'POST', body: payload, keepalive: true })
+      }
+    }
+
+    // 页面关闭/切换时发送
+    window.addEventListener('beforeunload', sendDuration)
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'hidden') sendDuration()
+    })
+
+    return () => {
+      sendDuration()
+      window.removeEventListener('beforeunload', sendDuration)
+    }
+  }, [code])
 
   // ── 加载场景数据（修复：使用正确的分享码 API 路径）────────────────────
   useEffect(() => {
